@@ -4,10 +4,10 @@ import { readFile, access } from "node:fs/promises";
 import { resolve } from "node:path";
 test("Pages serves a prerendered landing page with subpath-safe assets", async () => {
   const html = await readFile("index.html", "utf8");
-  assert.match(html, /GO LIVE/);
+  assert.match(html, /aria-label="Go out\."/);
   assert.match(html, /action="https:\/\/formspree.io\/f\/myeybdge"/);
   assert.match(html, /name="_gotcha"/);
-  assert.match(html, /Give me a shout/);
+  assert.match(html, /Count me in/);
   assert.doesNotMatch(html, /Signups opening soon|disabled=""/);
   assert.match(html, /<input(?=[^>]*name="email")(?=[^>]*required="")[^>]*>/);
   assert.match(html, /<input(?=[^>]*name="neighborhood")(?=[^>]*required="")[^>]*>/);

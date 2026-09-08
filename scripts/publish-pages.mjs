@@ -6,7 +6,7 @@ const { render } = await import(new URL("../.pages-ssr/prerender.js", import.met
 const template = await readFile(resolve(root, ".pages-build/index.html"), "utf8");
 if (!template.includes("<!--app-html-->")) throw new Error("Missing prerender placeholder");
 const html = template.replace("<!--app-html-->", render());
-if (!html.includes("GO LIVE") || !html.includes('id="waitlist"')) throw new Error("Landing page failed to prerender");
+if (!html.includes('aria-label="Go out."') || !html.includes('id="waitlist"')) throw new Error("Landing page failed to prerender");
 await mkdir(resolve(root, "site-assets"), { recursive: true });
 for (const file of await readdir(resolve(root, "site-assets"))) {
   if (/^index-[\w-]+\.(js|css)$/.test(file)) await unlink(resolve(root, "site-assets", file));

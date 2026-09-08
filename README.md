@@ -12,7 +12,9 @@ Use Node 22.13 or later. Run `npm ci`, then `npm run dev`.
 
 After editing the page, run `npm run build:pages` and commit the changed source **and** generated `index.html` / `site-assets/`. Push to `main`; the existing GitHub Pages deployment publishes these files. The build prerenders the landing page, so its content is present before JavaScript loads. Assets use the `/OutRN/` base path.
 
-`app/page.tsx` and `app/globals.css` contain the page. `web/` contains the browser entry, prerender entry, and configuration. Older server prototype files remain in the repository but are not imported by the Pages build.
+`app/page.tsx` and `app/globals.css` contain the page; `app/waitlist-form.tsx` contains the Formspree form. `web/` contains the browser entry, prerender entry, and configuration. Older server prototype files remain in the repository but are not imported by the Pages build.
+
+The three-section page uses fluid headings, a rotating outing-card stack, pointer tilt, and scroll reveals. Motion pauses on request and respects the device's reduced-motion setting. Card rotation also pauses while a visitor interacts with the examples.
 
 ## Waitlist
 
@@ -27,3 +29,5 @@ Submission disables the submit button, prevents rapid duplicate clicks, keeps en
 ## Assets
 
 `public/images/city-night.jpg` is an original AI-generated editorial illustration, not a verified venue photograph. Outing cards are examples, not live listings.
+
+Barlow Condensed and DM Sans are bundled in `public/fonts/` with their SIL Open Font Licenses, so typography does not depend on a visitor's installed fonts or a third-party font request.
