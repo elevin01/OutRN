@@ -14,6 +14,8 @@ After editing the page, run `npm run build:pages` and commit the changed source 
 
 `app/page.tsx` and `app/globals.css` contain the page; `app/waitlist-form.tsx` contains the Formspree form. `web/` contains the browser entry, prerender entry, and configuration. Older server prototype files remain in the repository but are not imported by the Pages build.
 
+OutRN is always free to use. Opening the app will surface at least three worthwhile nearby options immediately; time and budget filters are optional. Outing prices on the example cards refer to venue or activity costs, not an OutRN fee.
+
 The three-section page uses fluid headings, a rotating outing-card stack, pointer tilt, and scroll reveals. Motion pauses on request and respects the device's reduced-motion setting. Card rotation also pauses while a visitor interacts with the examples.
 
 ## Waitlist
