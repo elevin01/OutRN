@@ -5,7 +5,12 @@ import { resolve } from "node:path";
 test("Pages serves a prerendered landing page with subpath-safe assets", async () => {
   const html = await readFile("index.html", "utf8");
   assert.match(html, /GO LIVE/);
-  assert.match(html, /Early access is opening soon/);
+  assert.match(html, /action="https:\/\/formspree.io\/f\/myeybdge"/);
+  assert.match(html, /name="_gotcha"/);
+  assert.match(html, /Give me a shout/);
+  assert.doesNotMatch(html, /Signups opening soon|disabled=""/);
+  assert.match(html, /<input(?=[^>]*name="email")(?=[^>]*required="")[^>]*>/);
+  assert.match(html, /<input(?=[^>]*name="neighborhood")(?=[^>]*required="")[^>]*>/);
   assert.doesNotMatch(html, /chatgpt\.site|\/api\/waitlist|<!--app-html-->/);
   for (const match of html.matchAll(/(?:src|href)="(\/[^"#]+)"/g)) {
     assert.ok(match[1].startsWith("/OutRN/"), match[1]);

@@ -14,11 +14,11 @@ After editing the page, run `npm run build:pages` and commit the changed source 
 
 `app/page.tsx` and `app/globals.css` contain the page. `web/` contains the browser entry, prerender entry, and configuration. Older server prototype files remain in the repository but are not imported by the Pages build.
 
-## Waitlist status
+## Waitlist
 
-**Email collection is not connected on GitHub Pages yet.** The page clearly says signups are not open and disables submission. No email is sent to ChatGPT Sites and no signup success is fabricated.
+The live form uses the React integration (`@formspree/react`, `useForm`, and `ValidationError`) with `https://formspree.io/f/myeybdge`. Its endpoint is in `web/site-config.json`. It collects `email` and `neighborhood`, with `_gotcha` for Formspree's honeypot, a signup subject, and a source label. The form also has an HTML `action` and `method` for use without JavaScript.
 
-To enable the form, configure `waitlistEndpoint` in `web/site-config.json` with an HTTPS form-service endpoint that accepts browser-origin JSON POST requests (`email`, `neighborhood`, `website`) and returns a JSON response with a successful HTTP status only after storing the signup. The service must handle validation, spam prevention, data privacy, and launch-email unsubscribes. Rebuild and commit the generated assets after configuration. Never put private service keys in browser code.
+Submission disables the submit button, prevents rapid duplicate clicks, keeps entered values on errors, shows field and general errors, and displays success only after Formspree accepts the request. Formspree handles the receiving side; no server or secrets are hosted on GitHub Pages. Manage notifications, domain restrictions, spam settings, quotas, and launch-email delivery in Formspree. The integration does not automatically send launch emails or deduplicate repeat signups.
 
 ## Verification
 
