@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type PointerEvent } from "react";
 import WaitlistForm from "./waitlist-form";
 
 const cityImage = `${import.meta.env.BASE_URL}public/images/city-night.jpg`;
+const daytimeImage = `${import.meta.env.BASE_URL}public/images/city-afternoon.webp`;
 const picks = [
   {
     name: "Jazz", title: ["JAZZ", "DOWNSTAIRS."], walk: "8 min walk", category: "LIVE MUSIC", type: "music",
@@ -89,7 +90,7 @@ export default function Home() {
         <div className="card-deck" aria-label="Example nearby outings">
           {picks.map((pick,index)=><article key={pick.name} className={`outing-card ${pick.type}`} data-position={(index-active+picks.length)%picks.length} aria-hidden={index!==active}>
             <div className="card-top"><span className="micro">{pick.walk}</span><span className="micro">{pick.category}</span></div>
-            {pick.type === "music" && <div className="card-image"><img src={cityImage} alt=""/><span aria-hidden="true">ONE MORE SET.</span></div>}
+            {pick.type === "music" && <div className="jazz-poster" aria-hidden="true"><div className="record"><i/></div><div className="gig-type"><span>LIVE / TONIGHT</span><strong>ONE<br/>MORE SET.</strong></div></div>}
             {pick.type === "art" && <div className="gallery-print" aria-hidden="true"><i/><i/><i/><span>AFTER HOURS / EXHIBITION 03</span></div>}
             {pick.type === "food" && <div className="dinner-slip" aria-hidden="true"><span>WALK-INS WELCOME</span><strong>ORDER SOMETHING GOOD.</strong><span>THE KITCHEN’S STILL ON.</span></div>}
             <div className="card-content">
@@ -106,7 +107,7 @@ export default function Home() {
     </section>
     <section className="the-idea" id="the-idea">
       <div className="idea-intro reveal"><p className="eyebrow">SKIP THE SEARCH.</p><div className="idea-explanation"><p>Open the app.<br/><strong>Pick the one you vibe with.</strong></p><p className="optional-filters">Got a budget or a time limit? Add it if you want.</p></div></div>
-      <div className="street"><img className="street-image" src={cityImage} alt="Friends outside a neighborhood music venue" loading="lazy"/><div className="street-shade"/><h2 className="street-title reveal"><span>PICK ONE.</span><span>GET GOING.</span></h2><div className="street-bottom"><span>Checked by locals.</span><span>Walk-in first.</span><span>Directions in one tap.</span></div></div>
+      <div className="street"><img className="street-image" src={daytimeImage} alt="People crossing a sunlit street toward a café and gallery" loading="lazy"/><div className="street-shade"/><h2 className="street-title reveal"><span>PICK ONE.</span><span>GET GOING.</span></h2><div className="street-bottom"><span>Checked by locals.</span><span>Walk-in first.</span><span>Directions in one tap.</span></div></div>
     </section>
     <section className="waitlist" id="waitlist"><div className="waitlist-copy reveal"><p className="eyebrow">OUT RN IS ON ITS WAY.</p><h2><span>BE</span> FIRST.</h2><p>We’ll email you when we’re in your neighborhood.</p></div><div className="signup-panel reveal"><WaitlistForm/></div></section>
     <footer><a className="wordmark" href="#" aria-label="Back to top">OUT<span>RN</span></a><p>See you out there.</p><span className="micro">© {new Date().getFullYear()} OUT RN</span></footer>

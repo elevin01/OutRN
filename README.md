@@ -30,6 +30,12 @@ Submission disables the submit button, prevents rapid duplicate clicks, keeps en
 
 ## Assets
 
-`public/images/city-night.jpg` is an original AI-generated editorial illustration, not a verified venue photograph. Outing cards are examples, not live listings.
+`public/images/city-night.jpg` appears only in the hero. `public/images/city-afternoon.webp` provides a separate daytime scene for the lower section. Both are original AI-generated editorial illustrations, not verified venue photographs. The music card uses a CSS gig poster. Outing cards are examples, not live listings.
 
 Barlow Condensed and DM Sans are bundled in `public/fonts/` with their SIL Open Font Licenses, so typography does not depend on a visitor's installed fonts or a third-party font request.
+
+### Daytime image generation
+
+Asset: `public/images/city-afternoon.webp`. Generated with the built-in image generator, then compressed to WebP for the page.
+
+Prompt: Use case: photorealistic-natural. Create a landscape editorial image for OutRN, an app about getting outside spontaneously. New standalone website background asset, 1536x1024 landscape. A candid sunlit city corner in late afternoon, a few casually dressed adults mid-stride crossing a broad zebra crossing toward a small neighborhood café and an open art space, shot from a slightly elevated diagonal street angle. Focus on movement, long angled shadows, worn street paint and warm brick, with soft blue sky reflections. Natural documentary street photography feeling, subtle 35mm grain, lived-in details, unposed people not looking at camera. A clearly daytime outdoor scene, different from a group of friends outside a music bar at night. Keep the left third mostly open textured asphalt and crossing geometry, suitable for large white and lime website type added later in code. People and interesting shopfront details in the right half, small enough to be environmental rather than portrait subjects. No readable text, no logos, no watermarks, no embedded headings, no collage or interface.
