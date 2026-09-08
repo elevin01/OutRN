@@ -10,3 +10,5 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
 
 main{overflow-x:clip}
+
+.signup-panel .signup-availability{font-size:14px!important;color:#c5cbd2!important}.signup-panel input:disabled{opacity:.45}.signup-panel button:disabled{cursor:not-allowed}

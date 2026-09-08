@@ -1,24 +1,29 @@
 # OutRN
 
-Marketing landing page and neighborhood early-access waitlist for OutRN.
+Public landing page hosted on **GitHub Pages**: https://elevin01.github.io/OutRN/
 
-## Features
+## Hosting
 
-- Full-screen radar hero, floating example picks, and motion pause / reduced-motion support.
-- Responsive product story and interactive example outings.
-- Persistent email and neighborhood waitlist, with validation and duplicate-safe submission.
-- Outing cards are illustrative, not live recommendations.
+GitHub Pages serves `main` → `/ (root)`. The root `index.html`, `.nojekyll`, `site-assets/`, and `public/` contain the deployable static website. No ChatGPT sign-in or ChatGPT Sites backend is used by this build.
 
-## Development
+## Develop and publish changes
 
-Node 22.13+ is required. Install with `npm ci`; run `npm run dev`. Build with `npm run build`.
+Use Node 22.13 or later. Run `npm ci`, then `npm run dev`.
 
-The application uses React with Vinext and a Cloudflare Worker. The logical D1 binding is `DB`. Database schema is in `db/schema.ts`; generate migrations with `npm run db:generate` and apply them before running the waitlist. Sites applies production migrations on deployment.
+After editing the page, run `npm run build:pages` and commit the changed source **and** generated `index.html` / `site-assets/`. Push to `main`; the existing GitHub Pages deployment publishes these files. The build prerenders the landing page, so its content is present before JavaScript loads. Assets use the `/OutRN/` base path.
 
-## Waitlist
+`app/page.tsx` and `app/globals.css` contain the page. `web/` contains the browser entry, prerender entry, and configuration. Older server prototype files remain in the repository but are not imported by the Pages build.
 
-`POST /api/waitlist` accepts `email` and `neighborhood`. Records are stored in the D1 `waitlist` table. Email is normalized and unique; repeated signups leave the original record unchanged. There is no public endpoint exposing signups. This version stores signups; it does not send confirmation or launch emails. Export through authorized database access when preparing launch updates.
+## Waitlist status
+
+**Email collection is not connected on GitHub Pages yet.** The page clearly says signups are not open and disables submission. No email is sent to ChatGPT Sites and no signup success is fabricated.
+
+To enable the form, configure `waitlistEndpoint` in `web/site-config.json` with an HTTPS form-service endpoint that accepts browser-origin JSON POST requests (`email`, `neighborhood`, `website`) and returns a JSON response with a successful HTTP status only after storing the signup. The service must handle validation, spam prevention, data privacy, and launch-email unsubscribes. Rebuild and commit the generated assets after configuration. Never put private service keys in browser code.
+
+## Verification
+
+`npm test` builds and validates the deployable entry, subpath-safe local assets, and absence of the former Sites endpoint.
 
 ## Assets
 
-`public/images/city-night.jpg` is an original AI-generated editorial illustration. It is not a photograph of a real verified venue.
+`public/images/city-night.jpg` is an original AI-generated editorial illustration, not a verified venue photograph. Outing cards are examples, not live listings.
