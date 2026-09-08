@@ -8,17 +8,17 @@ const picks = [
   {
     name: "Jazz", title: ["JAZZ", "DOWNSTAIRS."], walk: "8 min walk", category: "LIVE MUSIC", type: "music",
     facts: [{ label: "Next set", value: "8:30 pm" }, { label: "At the door", value: "Walk right in" }],
-    note: "Small room. Great trio. A few seats left.", priceLabel: "Entry", price: "$15 at the door",
+    note: "You can sit close to the band. Gets loud, in a good way.", priceLabel: "Entry", price: "$15 at the door",
   },
   {
     name: "Art", title: ["THE GALLERY’S", "STILL OPEN."], walk: "12 min walk", category: "POP-UP SHOW", type: "art",
     facts: [{ label: "Open until", value: "10 pm" }, { label: "On the walls", value: "Prints + photography" }],
-    note: "No ticket needed. Even 20 minutes is worth it.", priceLabel: "Entry", price: "Free",
+    note: "Tiny place, lots to look at. Don’t miss the prints at the back.", priceLabel: "Entry", price: "Free",
   },
   {
     name: "Food", title: ["TWO SEATS", "AT THE BAR."], walk: "5 min walk", category: "LATE DINNER", type: "food",
     facts: [{ label: "Kitchen until", value: "11 pm" }, { label: "Seats", value: "Two at the counter" }],
-    note: "Go for the noodles. Stay for another plate.", priceLabel: "Food", price: "Plates from $12",
+    note: "The chilli noodles are the reason to come. Grab a counter seat.", priceLabel: "Food", price: "Plates from $12",
   },
 ];
 
@@ -81,6 +81,7 @@ export default function Home() {
     <a href="#main-content" className="skip-link">Skip to content</a>
     <header className="nav"><a className="wordmark" href="#" aria-label="OutRN home">OUT<span>RN</span></a><span className="nav-note">RIGHT NOW IS A GOOD TIME.</span><a className="nav-link" href="#waitlist">Join the waitlist</a></header>
     <section className="hero" id="main-content">
+      <div className="hero-backdrop" aria-hidden="true"><img src={cityImage} alt="" fetchPriority="high"/><div className="hero-shade"/></div>
       <div className="hero-copy"><p className="eyebrow intro-enter">YOU’RE FREE. NOW WHAT?</p><h1 aria-label="Go out."><span className="type-line"><span>GO</span></span><span className="type-line"><span>OUT.</span></span></h1><div className="hero-bottom intro-enter"><p>At least three things worth going out for.<br/> Curated for you. Nearby. Ready right now.</p><div className="cta-row"><a className="button" href="#waitlist">I’m in</a><span className="free-note">OutRN is free. Always.</span></div><span className="launch-note">Coming soon. One neighborhood at a time.</span></div></div>
       <div className="discovery intro-enter" ref={stage} onPointerMove={tilt} onPointerEnter={()=>setInteracting(true)} onPointerLeave={resetTilt} onFocusCapture={()=>setInteracting(true)} onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget))setInteracting(false);}}>
         <div className="orbit-field" aria-hidden="true"><div className="orbit-ring ring-a"/><div className="orbit-ring ring-b"/><div className="orbit-line"/><div className="orbit-sweep"/><div className="orbit-track"><i/></div><div className="orbit-track track-two"><i/></div></div>
@@ -94,7 +95,7 @@ export default function Home() {
             <div className="card-content">
               <h2>{pick.title.map(line=><span key={line}>{line}</span>)}</h2>
               <dl className="card-facts">{pick.facts.map(fact=><div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
-              <p className="local-note"><span>LOCAL WORD</span>{pick.note}</p>
+              <p className="local-note"><span>LOCAL TAKE</span>{pick.note}</p>
               <div className="card-price"><span><span className="price-label">{pick.priceLabel}</span><strong>{pick.price}</strong></span><span className="directions-preview">Directions</span></div>
             </div>
           </article>)}

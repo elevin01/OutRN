@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "OutRN — Go live a little.",
+  title: "OutRN | Go out.",
   description: "Free for a few hours? Find live, locally verified things worth doing nearby. Join OutRN’s neighborhood early-access waitlist.",
   icons: {
     icon: "/favicon.svg",
