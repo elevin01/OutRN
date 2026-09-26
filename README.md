@@ -16,7 +16,7 @@ After editing the page, run `npm run build:pages` and commit the changed source 
 
 OutRN is always free to use. Opening the app will surface at least three worthwhile nearby options immediately; time and budget filters are optional. Outing prices on the example cards refer to venue or activity costs, not an OutRN fee.
 
-The three-section page uses fluid headings, a rotating outing-card stack, pointer tilt, and scroll reveals. Motion pauses on request and respects the device's reduced-motion setting. Card rotation also pauses while a visitor interacts with the examples.
+The three-section page uses fluid headings, four interactive outing cards synchronized with four hero photographs, pointer tilt, and scroll reveals. Tap a card, select a category, use arrow keys, or swipe horizontally to change both the card and photograph. Manual selection stops autoplay until resumed. Motion pauses on request and respects reduced-motion preferences.
 
 ## Waitlist
 
@@ -30,7 +30,7 @@ Submission disables the submit button, prevents rapid duplicate clicks, keeps en
 
 ## Assets
 
-`public/images/city-night.jpg` appears only in the hero. `public/images/city-afternoon.webp` provides a separate daytime scene for the lower section. Both are original AI-generated editorial illustrations, not verified venue photographs. The music card uses a CSS gig poster. Outing cards are examples, not live listings.
+`public/images/jazz-film.webp`, `gallery-film.webp`, `dinner-film.webp`, and `waterfront-film.webp` are the active hero photos. `public/images/city-afternoon.webp` is the separate lower-section image. All are original AI-generated illustrations, not verified venue photographs. Older photo assets remain available but are not rendered. Cards are examples, not live listings. See [imagery prompts, copy research, and interaction details](docs/hero-imagery-and-copy.md).
 
 Barlow Condensed and DM Sans are bundled in `public/fonts/` with their SIL Open Font Licenses, so typography does not depend on a visitor's installed fonts or a third-party font request.
 
@@ -40,7 +40,7 @@ Asset: `public/images/city-afternoon.webp`. Generated with the built-in image ge
 
 Prompt: Use case: photorealistic-natural. Create a landscape editorial image for OutRN, an app about getting outside spontaneously. New standalone website background asset, 1536x1024 landscape. A candid sunlit city corner in late afternoon, a few casually dressed adults mid-stride crossing a broad zebra crossing toward a small neighborhood café and an open art space, shot from a slightly elevated diagonal street angle. Focus on movement, long angled shadows, worn street paint and warm brick, with soft blue sky reflections. Natural documentary street photography feeling, subtle 35mm grain, lived-in details, unposed people not looking at camera. A clearly daytime outdoor scene, different from a group of friends outside a music bar at night. Keep the left third mostly open textured asphalt and crossing geometry, suitable for large white and lime website type added later in code. People and interesting shopfront details in the right half, small enough to be environmental rather than portrait subjects. No readable text, no logos, no watermarks, no embedded headings, no collage or interface.
 
-### Hero rotation and clarity (September 2026)
+### Earlier hero iteration (superseded by the interactive cards)
 
 The hero now leads with “Got free time? Go out.” and explicitly describes OutRN as an app for finding things to do. Four different scenes crossfade every 7.5 seconds. Selecting a scene pauses motion; “Play motion” resumes it. Focus on the scene controls, interaction with the example cards, hidden tabs, and reduced-motion preferences suspend automatic rotation. The lower daytime street image is separate, giving the page five distinct images.
 
