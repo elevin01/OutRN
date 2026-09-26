@@ -36,3 +36,7 @@ A single active index drives four cards and their matching hero photos. Category
 ## Recurring invitation update
 
 The user's next direction makes “Try going out” the recurring brand phrase. The hero now reads “Got free time? Try going out.” The pain-point section reads “Don’t spend all your free time finding plans. Try going out.” The supporting promise is “Find the one worth your time. Get out the door in 3 easy clicks.” Its proposed app journey is open OutRN, pick your plan, get directions. This describes the intended app experience; the landing page remains an early-access waitlist. “Try OutRN” closes the page, and every signup button uses “Join the waitlist.”
+
+## Invitation hierarchy
+
+“Try going out (rn)” is now the dominant second-section headline. The pain point is a smaller introductory sentence above it. The hero retains its two-line invitation layout, with a smaller parenthetical “(rn)” after “out” to connect the invitation to the OutRN name. The recurring nav/footer phrase follows the same wording.
