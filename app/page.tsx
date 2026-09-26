@@ -147,10 +147,30 @@ export default function Home() {
       <div className="hero-foot"><a href="#the-idea">Out the door in 3 clicks.</a><button className="motion-control" onClick={()=>{if(paused || autoplayStopped){setPaused(false);setAutoplayStopped(false);}else{setPaused(true);}}} aria-pressed={paused || autoplayStopped}>{paused || autoplayStopped ? "Play motion" : "Pause motion"}</button></div>
     </section>
     <section className="the-idea" id="the-idea">
-      <div className="idea-intro reveal"><p className="eyebrow">FROM “WHAT SHOULD I DO?” TO OUT THE DOOR.</p><div className="idea-explanation"><p>Find the one worth your time.<br/><strong>Get out the door in 3 easy clicks.</strong></p><p className="three-clicks">Open OutRN. Pick your plan. Get directions.</p><p className="optional-filters">Got a budget or a time limit? Add it if you want.</p></div></div>
-      <div className="street"><img className="street-image" src={daytimeImage} alt="People crossing a sunlit street toward a café and gallery" loading="lazy"/><div className="street-shade"/><div className="street-story reveal"><p className="street-setup">Don’t spend all your free time finding plans.</p><h2 className="street-invitation" aria-label="Try going out (rn)."><span>TRY GOING </span><span>OUT <span className="rn-aside">(rn)</span></span></h2></div><div className="street-bottom"><p>Try OutRN.<br/>A few good options. One worth stepping out for.</p><a className="button" href="#waitlist">Join the waitlist</a></div></div>
+      <div className="idea-layout">
+        <div className="idea-story reveal">
+          <p className="eyebrow">LESS SEARCHING. MORE GOING.</p>
+          <h2>Don’t spend all your free time finding plans.</h2>
+          <p className="idea-summary">Open OutRN for at least three things to do nearby, curated for you and ready right now.</p>
+          <p className="idea-invitation">Try going out <span>(rn).</span></p>
+          <a className="button" href="#waitlist">Join the waitlist</a>
+        </div>
+        <figure className="street reveal">
+          <img className="street-image" src={daytimeImage} alt="People crossing a sunlit street toward a café and gallery" loading="lazy"/>
+          <div className="street-shade"/>
+          <figcaption>Nothing planned.<br/>Still a good afternoon.</figcaption>
+        </figure>
+      </div>
+      <div className="plan-journey reveal">
+        <div className="journey-heading"><h3>Out the door in 3 easy clicks.</h3><p>Got a budget or a time limit? Add it if you want.</p></div>
+        <ol className="journey-steps">
+          <li><span className="step-number" aria-hidden="true">01</span><div><h4>Open OutRN.</h4><p>Your picks are already waiting.</p></div></li>
+          <li><span className="step-number" aria-hidden="true">02</span><div><h4>Pick your plan.</h4><p>See the vibe, the cost, and the walk.</p></div></li>
+          <li><span className="step-number" aria-hidden="true">03</span><div><h4>Get directions.</h4><p>Phone away. You’re on your way.</p></div></li>
+        </ol>
+      </div>
     </section>
-    <section className="waitlist" id="waitlist"><div className="waitlist-copy reveal"><p className="eyebrow">YOUR NEXT GOOD PLAN STARTS HERE.</p><h2><span>TRY</span> OUTRN.</h2><p>Join the waitlist. We’ll let you know when you can try OutRN near you.</p></div><div className="signup-panel reveal"><WaitlistForm/></div></section>
+    <section className="waitlist" id="waitlist"><div className="waitlist-copy reveal"><p className="eyebrow">YOUR NEXT GOOD PLAN STARTS HERE.</p><h2>Try OutRN.</h2><p>Join the waitlist. We’ll let you know when you can try OutRN near you.</p><p className="waitlist-free">Free to use. Now and always.</p></div><div className="signup-panel reveal"><WaitlistForm/></div></section>
     <footer><a className="wordmark" href="#" aria-label="Back to top">OUT<span>RN</span></a><p>Got free time? Try going out (rn).</p><span className="micro">© {new Date().getFullYear()} OUT RN</span></footer>
   </main>;
 }
