@@ -164,3 +164,15 @@
 
 .card-facts dd{font-size:12px}.card-content .local-note{font-size:12px}.pick-index{font-size:8px}.local-note>span{font-size:8px}.card-price strong{font-size:14px}
 @media(max-width:365px){.card-facts dd{font-size:11px}.card-content .local-note{font-size:11px}.card-price strong{font-size:12px}}
+
+/* Natural title wrapping and practical details in a compact two-by-two grid. */
+.card-content h2{width:100%;max-width:none;font-size:clamp(32px,11.8cqw,54px);line-height:.98;text-wrap:pretty;flex-shrink:0}
+.card-facts{gap:10px 14px;flex-shrink:0}
+.card-facts>div{min-width:0}
+.card-facts>div+div{padding-left:0;border-left:0}
+.card-facts>div:nth-child(even){padding-left:14px;border-left:1px solid var(--card-rule)}
+.card-content .local-note,.card-price{flex-shrink:0}
+.discovery{height:690px}
+@media(max-height:800px) and (min-width:1051px){.discovery{height:660px}}
+@media(max-width:760px){.discovery{height:690px}.card-facts{gap:10px 12px}.card-facts>div:nth-child(even){padding-left:12px}}
+@media(max-width:365px){.discovery{height:670px}.card-content h2{font-size:clamp(29px,11.8cqw,40px)}.card-facts{gap:9px 10px}.card-facts>div:nth-child(even){padding-left:10px}}

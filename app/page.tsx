@@ -7,23 +7,23 @@ import CardArtwork from "./card-artwork";
 const daytimeImage = `${import.meta.env.BASE_URL}public/images/city-afternoon.webp`;
 const picks = [
   {
-    image: `${import.meta.env.BASE_URL}public/images/jazz-film.webp`, name: "Jazz", title: ["JAZZ", "DOWNSTAIRS."], walk: "8 min walk", category: "LIVE MUSIC", type: "music",
-    facts: [{ label: "Next set", value: "8:30 pm" }, { label: "At the door", value: "Walk right in" }],
+    image: `${import.meta.env.BASE_URL}public/images/jazz-film.webp`, name: "Jazz", title: "JAZZ DOWNSTAIRS.", walk: "8 min walk", category: "LIVE MUSIC", type: "music",
+    facts: [{ label: "Next set", value: "8:30 pm" }, { label: "At the door", value: "Walk right in" }, { label: "Crowd", value: "Lively, room to sit" }, { label: "Parking", value: "Garage 2 blocks away" }],
     note: "You can sit close to the band. Gets loud, in a good way.", priceLabel: "Entry", price: "$15 at the door",
   },
   {
-    image: `${import.meta.env.BASE_URL}public/images/gallery-film.webp`, name: "Art", title: ["THE GALLERY’S", "STILL OPEN."], walk: "12 min walk", category: "POP-UP SHOW", type: "art",
-    facts: [{ label: "Open until", value: "10 pm" }, { label: "On the walls", value: "Prints + photography" }],
+    image: `${import.meta.env.BASE_URL}public/images/gallery-film.webp`, name: "Art", title: "THE GALLERY’S STILL OPEN.", walk: "12 min walk", category: "POP-UP SHOW", type: "art",
+    facts: [{ label: "Open until", value: "10 pm" }, { label: "On the walls", value: "Prints + photography" }, { label: "Crowd", value: "Easy to wander" }, { label: "Parking", value: "Metered street parking" }],
     note: "Tiny place, lots to look at. Don’t miss the prints at the back.", priceLabel: "Entry", price: "Free",
   },
   {
-    image: `${import.meta.env.BASE_URL}public/images/dinner-film.webp`, name: "Food", title: ["TWO SEATS", "AT THE BAR."], walk: "5 min walk", category: "LATE DINNER", type: "food",
-    facts: [{ label: "Kitchen until", value: "11 pm" }, { label: "Seats", value: "Two at the counter" }],
+    image: `${import.meta.env.BASE_URL}public/images/dinner-film.webp`, name: "Food", title: "TWO SEATS AT THE BAR.", walk: "5 min walk", category: "LATE DINNER", type: "food",
+    facts: [{ label: "Kitchen until", value: "11 pm" }, { label: "Seats", value: "Two at the counter" }, { label: "Crowd", value: "Busy, short wait" }, { label: "Parking", value: "Street parking is limited" }],
     note: "The chilli noodles are the reason to come. Grab a counter seat.", priceLabel: "Food", price: "Plates from $12",
   },
   {
-    image: `${import.meta.env.BASE_URL}public/images/waterfront-film.webp`, name: "Outside", title: ["CATCH THE", "LAST LIGHT."], walk: "10 min walk", category: "BY THE WATER", type: "outside",
-    facts: [{ label: "The plan", value: "A walk by the water" }, { label: "Bring", value: "A layer for the breeze" }],
+    image: `${import.meta.env.BASE_URL}public/images/waterfront-film.webp`, name: "Outside", title: "CATCH THE LAST LIGHT.", walk: "10 min walk", category: "BY THE WATER", type: "outside",
+    facts: [{ label: "The plan", value: "A walk by the water" }, { label: "Bring", value: "A layer for the breeze" }, { label: "Crowd", value: "Plenty of space" }, { label: "Parking", value: "Public lot nearby" }],
     note: "Keep walking past the first benches. The view opens up around the bend.", priceLabel: "Entry", price: "Free",
   },
 ];
@@ -138,7 +138,7 @@ export default function Home() {
             <CardArtwork type={pick.type}/>
             <div className="card-content">
               <div className="pick-index"><span>OUTRN PICKS</span><span>0{index + 1}</span></div>
-              <h2>{pick.title.map(line=><span key={line}>{line}</span>)}</h2>
+              <h2>{pick.title}</h2>
               <dl className="card-facts">{pick.facts.map(fact=><div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
               <p className="local-note"><span>WORTH KNOWING</span>{pick.note}</p>
               <div className="card-price"><span><span className="price-label">{pick.priceLabel}</span><strong>{pick.price}</strong></span><span className="directions-preview">Next pick <span className="next-pick-arrow" aria-hidden="true">↗</span></span></div>
@@ -146,7 +146,7 @@ export default function Home() {
           </article>)}
         </div>
         <div className="discovery-bottom"><div className="pick-controls" role="group" aria-label="Choose an example outing">{picks.map((pick,index)=><button key={pick.name} className={index===active ? "active" : ""} onClick={()=>selectPick(index)} aria-pressed={index===active}>{pick.name}</button>)}</div><span className="micro example-label">SWIPE OR TAP</span></div>
-      <p className="example-disclaimer">Illustrative picks. Your app picks will be personal.</p></div>
+      <p className="example-disclaimer">Example picks. Crowd and parking info shown for illustration.</p></div>
       <div className="hero-foot"><a href="#the-idea">Out the door in 3 clicks.</a><button className="motion-control" onClick={()=>{if(paused || autoplayStopped){setPaused(false);setAutoplayStopped(false);}else{setPaused(true);}}} aria-pressed={paused || autoplayStopped}>{paused || autoplayStopped ? "Play motion" : "Pause motion"}</button></div>
     </section>
     <section className="the-idea" id="the-idea">
