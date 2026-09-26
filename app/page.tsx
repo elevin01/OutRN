@@ -107,7 +107,7 @@ export default function Home() {
 
   return <main ref={root} className={motionOff ? "motion-off" : ""}>
     <a href="#main-content" className="skip-link">Skip to content</a>
-    <header className="nav"><a className="wordmark" href="#" aria-label="OutRN home">OUT<span>RN</span></a><span className="nav-note">RIGHT NOW IS A GOOD TIME.</span><a className="nav-link" href="#waitlist">Join the waitlist</a></header>
+    <header className="nav"><a className="wordmark" href="#" aria-label="OutRN home">OUT<span>RN</span></a><span className="nav-note">TRY GOING OUT.</span><a className="nav-link" href="#waitlist">Join the waitlist</a></header>
     <section className="hero" id="main-content">
       <div className="hero-backdrop" aria-hidden="true">
         {picks.map((item, index) => <img key={item.name} src={item.image} alt="" className={active === index ? "scene-visible" : ""} fetchPriority={index === 0 ? "high" : "low"} loading={index === 0 ? "eager" : "lazy"} decoding="async"/>)}
@@ -115,7 +115,7 @@ export default function Home() {
       </div>
       <div className="hero-copy">
         <p className="eyebrow intro-enter">THE APP FOR FINDING THINGS TO DO.</p>
-        <h1 aria-label="Got free time? Go out."><span className="hero-question">GOT FREE TIME?</span><span className="hero-answer">GO OUT.</span></h1>
+        <h1 aria-label="Got free time? Try going out."><span className="hero-question">GOT FREE TIME?</span><span className="hero-answer"><span>TRY GOING</span><span>OUT.</span></span></h1>
         <div className="hero-bottom intro-enter">
           <p>At least three things worth going out for.<br/>Curated for you. Nearby. Ready right now.</p>
           <div className="cta-row"><a className="button" href="#waitlist">Join the waitlist</a><span className="free-note">OutRN is free. Always.</span></div>
@@ -144,13 +144,13 @@ export default function Home() {
         </div>
         <div className="discovery-bottom"><div className="pick-controls" role="group" aria-label="Choose an example outing">{picks.map((pick,index)=><button key={pick.name} className={index===active ? "active" : ""} onClick={()=>selectPick(index)} aria-pressed={index===active}>{pick.name}</button>)}</div><span className="micro example-label">SWIPE OR TAP</span></div>
       <p className="example-disclaimer">Illustrative picks. Your app picks will be personal.</p></div>
-      <div className="hero-foot"><a href="#the-idea">Less deciding. More doing.</a><button className="motion-control" onClick={()=>{if(paused || autoplayStopped){setPaused(false);setAutoplayStopped(false);}else{setPaused(true);}}} aria-pressed={paused || autoplayStopped}>{paused || autoplayStopped ? "Play motion" : "Pause motion"}</button></div>
+      <div className="hero-foot"><a href="#the-idea">Out the door in 3 clicks.</a><button className="motion-control" onClick={()=>{if(paused || autoplayStopped){setPaused(false);setAutoplayStopped(false);}else{setPaused(true);}}} aria-pressed={paused || autoplayStopped}>{paused || autoplayStopped ? "Play motion" : "Pause motion"}</button></div>
     </section>
     <section className="the-idea" id="the-idea">
-      <div className="idea-intro reveal"><p className="eyebrow">SKIP THE SEARCH.</p><div className="idea-explanation"><p>Too many tabs. Still no plans.<br/><strong>OutRN gets you to the good options.</strong></p><p className="optional-filters">Got a budget or a time limit? Add it if you want.</p></div></div>
-      <div className="street"><img className="street-image" src={daytimeImage} alt="People crossing a sunlit street toward a café and gallery" loading="lazy"/><div className="street-shade"/><h2 className="street-title reveal"><span>DON’T SPEND</span><span>YOUR FREE TIME</span><span>FINDING PLANS.</span></h2><div className="street-bottom"><p>At least three nearby ideas, picked for you.<br/>Pick the one you vibe with.</p><a className="button" href="#waitlist">Join the waitlist</a></div></div>
+      <div className="idea-intro reveal"><p className="eyebrow">FROM “WHAT SHOULD I DO?” TO OUT THE DOOR.</p><div className="idea-explanation"><p>Find the one worth your time.<br/><strong>Get out the door in 3 easy clicks.</strong></p><p className="three-clicks">Open OutRN. Pick your plan. Get directions.</p><p className="optional-filters">Got a budget or a time limit? Add it if you want.</p></div></div>
+      <div className="street"><img className="street-image" src={daytimeImage} alt="People crossing a sunlit street toward a café and gallery" loading="lazy"/><div className="street-shade"/><div className="street-story reveal"><h2 className="street-title" aria-label="Don’t spend all your free time finding plans."><span>DON’T SPEND ALL </span><span>YOUR FREE TIME </span><span>FINDING PLANS.</span></h2><p className="street-refrain">Try going out.</p></div><div className="street-bottom"><p>Try OutRN.<br/>A few good options. One worth stepping out for.</p><a className="button" href="#waitlist">Join the waitlist</a></div></div>
     </section>
-    <section className="waitlist" id="waitlist"><div className="waitlist-copy reveal"><p className="eyebrow">OUT RN IS ON ITS WAY.</p><h2><span>BE</span> FIRST.</h2><p>We’ll email you when we’re in your neighborhood.</p></div><div className="signup-panel reveal"><WaitlistForm/></div></section>
-    <footer><a className="wordmark" href="#" aria-label="Back to top">OUT<span>RN</span></a><p>See you out there.</p><span className="micro">© {new Date().getFullYear()} OUT RN</span></footer>
+    <section className="waitlist" id="waitlist"><div className="waitlist-copy reveal"><p className="eyebrow">YOUR NEXT GOOD PLAN STARTS HERE.</p><h2><span>TRY</span> OUTRN.</h2><p>Join the waitlist. We’ll let you know when you can try OutRN near you.</p></div><div className="signup-panel reveal"><WaitlistForm/></div></section>
+    <footer><a className="wordmark" href="#" aria-label="Back to top">OUT<span>RN</span></a><p>Got free time? Try going out.</p><span className="micro">© {new Date().getFullYear()} OUT RN</span></footer>
   </main>;
 }

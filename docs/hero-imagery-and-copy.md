@@ -32,3 +32,7 @@ Sources reviewed:
 ## Interaction
 
 A single active index drives four cards and their matching hero photos. Category selection, tapping the top card or exposed card edges, arrow keys, and horizontal swipes all use the same selection handler. Manual selection stops automatic rotation without disabling the crossfade. The motion control resumes rotation; reduced motion still takes precedence. Inactive cards are excluded from keyboard navigation and the accessibility tree. Focus follows the active card when using its full-card button.
+
+## Recurring invitation update
+
+The user's next direction makes “Try going out” the recurring brand phrase. The hero now reads “Got free time? Try going out.” The pain-point section reads “Don’t spend all your free time finding plans. Try going out.” The supporting promise is “Find the one worth your time. Get out the door in 3 easy clicks.” Its proposed app journey is open OutRN, pick your plan, get directions. This describes the intended app experience; the landing page remains an early-access waitlist. “Try OutRN” closes the page, and every signup button uses “Join the waitlist.”

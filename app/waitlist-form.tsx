@@ -35,7 +35,7 @@ export default function WaitlistForm() {
     <input type="hidden" name="_subject" value="OutRN: early access signup"/>
     <input type="hidden" name="source" value="OutRN GitHub Pages waitlist"/>
     <div className="honeypot" aria-hidden="true"><label htmlFor="website">Leave this empty</label><input id="website" name="_gotcha" tabIndex={-1} autoComplete="off"/></div>
-    <button className="button" disabled={busy} type="submit">{busy ? "Joining…" : "Count me in"}</button>
+    <button className="button" disabled={busy} type="submit">{busy ? "Joining…" : "Join the waitlist"}</button>
     <div aria-live="polite"><ValidationError errors={state.errors} className="form-error"/>{networkError && <p className="form-error" role="alert">{networkError}</p>}</div>
     <p className="privacy-note">Launch updates only. Your details are stored through Formspree. Reply to any update to unsubscribe.</p>
   </form>;
