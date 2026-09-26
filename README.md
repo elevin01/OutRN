@@ -39,3 +39,15 @@ Barlow Condensed and DM Sans are bundled in `public/fonts/` with their SIL Open 
 Asset: `public/images/city-afternoon.webp`. Generated with the built-in image generator, then compressed to WebP for the page.
 
 Prompt: Use case: photorealistic-natural. Create a landscape editorial image for OutRN, an app about getting outside spontaneously. New standalone website background asset, 1536x1024 landscape. A candid sunlit city corner in late afternoon, a few casually dressed adults mid-stride crossing a broad zebra crossing toward a small neighborhood café and an open art space, shot from a slightly elevated diagonal street angle. Focus on movement, long angled shadows, worn street paint and warm brick, with soft blue sky reflections. Natural documentary street photography feeling, subtle 35mm grain, lived-in details, unposed people not looking at camera. A clearly daytime outdoor scene, different from a group of friends outside a music bar at night. Keep the left third mostly open textured asphalt and crossing geometry, suitable for large white and lime website type added later in code. People and interesting shopfront details in the right half, small enough to be environmental rather than portrait subjects. No readable text, no logos, no watermarks, no embedded headings, no collage or interface.
+
+### Hero rotation and clarity (September 2026)
+
+The hero now leads with “Got free time? Go out.” and explicitly describes OutRN as an app for finding things to do. Four different scenes crossfade every 7.5 seconds. Selecting a scene pauses motion; “Play motion” resumes it. Focus on the scene controls, interaction with the example cards, hidden tabs, and reduced-motion preferences suspend automatic rotation. The lower daytime street image is separate, giving the page five distinct images.
+
+Visual references reviewed: Fever New York (https://feverup.com/en/new-york) and Meetup (https://www.meetup.com/). Their explicit activity context and varied experience imagery informed the direction; the slow background rotation is our own application of that idea.
+
+Three additional assets were made with the built-in image generator and compressed to 1440px WebP. Like the existing images, these are illustrative scenes, not verified venues:
+
+- `public/images/noodle-counter.webp`: Candid editorial wide photograph of friends eating at a warm neighborhood noodle counter, chef behind, amber lamps, dark teal wall on the left for website type. Natural documentary film feeling, no logos or embedded text.
+- `public/images/gallery-afternoon.webp`: Candid editorial wide photograph of two friends browsing an independent gallery in daylight, colorful abstract prints and industrial windows, charcoal partition on the left for website type. No logos or embedded text.
+- `public/images/waterfront-walk.webp`: Candid editorial wide photograph of friends walking an urban waterfront at golden hour, a bicycle, river reflections, olive trees and peach sunlight. Shaded foliage on the left for website type, no landmarks, logos or text.

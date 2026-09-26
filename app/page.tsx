@@ -5,6 +5,12 @@ import WaitlistForm from "./waitlist-form";
 
 const cityImage = `${import.meta.env.BASE_URL}public/images/city-night.jpg`;
 const daytimeImage = `${import.meta.env.BASE_URL}public/images/city-afternoon.webp`;
+const scenes = [
+  { image: cityImage, label: "Live music", pick: 0 },
+  { image: `${import.meta.env.BASE_URL}public/images/noodle-counter.webp`, label: "Good food", pick: 2 },
+  { image: `${import.meta.env.BASE_URL}public/images/gallery-afternoon.webp`, label: "A little art", pick: 1 },
+  { image: `${import.meta.env.BASE_URL}public/images/waterfront-walk.webp`, label: "Fresh air", pick: 0 },
+];
 const picks = [
   {
     name: "Jazz", title: ["JAZZ", "DOWNSTAIRS."], walk: "8 min walk", category: "LIVE MUSIC", type: "music",
@@ -25,6 +31,8 @@ const picks = [
 
 export default function Home() {
   const [active, setActive] = useState(0);
+  const [scene, setScene] = useState(0);
+  const [sceneFocused, setSceneFocused] = useState(false);
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
   const [interacting, setInteracting] = useState(false);
@@ -39,12 +47,15 @@ export default function Home() {
     return () => query.removeEventListener("change", update);
   }, []);
   useEffect(() => {
-    if (motionOff || interacting) return;
+    if (motionOff || interacting || sceneFocused) return;
     const timer = window.setInterval(() => {
-      if (!document.hidden) setActive(n => (n + 1) % picks.length);
-    }, 5200);
+      if (!document.hidden) {
+        setActive(n => (n + 1) % picks.length);
+        setScene(n => (n + 1) % scenes.length);
+      }
+    }, 7500);
     return () => window.clearInterval(timer);
-  }, [motionOff, interacting]);
+  }, [motionOff, interacting, sceneFocused]);
   useEffect(() => {
     const element = root.current;
     if (!element || motionOff) return;
@@ -82,8 +93,22 @@ export default function Home() {
     <a href="#main-content" className="skip-link">Skip to content</a>
     <header className="nav"><a className="wordmark" href="#" aria-label="OutRN home">OUT<span>RN</span></a><span className="nav-note">RIGHT NOW IS A GOOD TIME.</span><a className="nav-link" href="#waitlist">Join the waitlist</a></header>
     <section className="hero" id="main-content">
-      <div className="hero-backdrop" aria-hidden="true"><img src={cityImage} alt="" fetchPriority="high"/><div className="hero-shade"/></div>
-      <div className="hero-copy"><p className="eyebrow intro-enter">YOU’RE FREE. NOW WHAT?</p><h1 aria-label="Go out."><span className="type-line"><span>GO</span></span><span className="type-line"><span>OUT.</span></span></h1><div className="hero-bottom intro-enter"><p>At least three things worth going out for.<br/> Curated for you. Nearby. Ready right now.</p><div className="cta-row"><a className="button" href="#waitlist">I’m in</a><span className="free-note">OutRN is free. Always.</span></div><span className="launch-note">Coming soon. One neighborhood at a time.</span></div></div>
+      <div className="hero-backdrop" aria-hidden="true">
+        {scenes.map((item, index) => <img key={item.label} src={item.image} alt="" className={scene === index ? "scene-visible" : ""} fetchPriority={index === 0 ? "high" : "low"} loading={index === 0 ? "eager" : "lazy"} decoding="async"/>)}
+        <div className="hero-shade"/>
+      </div>
+      <div className="hero-copy">
+        <p className="eyebrow intro-enter">THE APP FOR FINDING THINGS TO DO.</p>
+        <h1 aria-label="Got free time? Go out."><span className="hero-question">GOT FREE TIME?</span><span className="hero-answer">GO OUT.</span></h1>
+        <div className="hero-bottom intro-enter">
+          <p>At least three things worth going out for.<br/>Curated for you. Nearby. Ready right now.</p>
+          <div className="cta-row"><a className="button" href="#waitlist">I’m in</a><span className="free-note">OutRN is free. Always.</span></div>
+          <span className="launch-note">Coming soon. One neighborhood at a time.</span>
+          <div className="scene-controls" role="group" aria-label="Explore the kinds of things you could do" onFocusCapture={()=>setSceneFocused(true)} onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget))setSceneFocused(false);}}>
+            {scenes.map((item, index)=><button key={item.label} onClick={()=>{setScene(index);setActive(item.pick);setPaused(true);}} aria-pressed={scene===index}><span className="scene-number" aria-hidden="true">0{index+1}</span>{item.label}</button>)}
+          </div>
+        </div>
+      </div>
       <div className="discovery intro-enter" ref={stage} onPointerMove={tilt} onPointerEnter={()=>setInteracting(true)} onPointerLeave={resetTilt} onFocusCapture={()=>setInteracting(true)} onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget))setInteracting(false);}}>
         <div className="orbit-field" aria-hidden="true"><div className="orbit-ring ring-a"/><div className="orbit-ring ring-b"/><div className="orbit-line"/><div className="orbit-sweep"/><div className="orbit-track"><i/></div><div className="orbit-track track-two"><i/></div></div>
         <div className="discovery-top"><span className="micro">A FEW BLOCKS AWAY</span><span className="micro">0{active+1} / 03</span></div>

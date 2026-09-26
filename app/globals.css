@@ -31,3 +31,22 @@
 .jazz-poster{height:96px;flex-shrink:0;position:relative;overflow:hidden;background:#163c35;color:#e8ece0;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;isolation:isolate}.record{position:absolute;width:126px;height:126px;left:-15px;top:7px;border-radius:50%;background:repeating-radial-gradient(circle,#101d1a 0 3px,#284f44 4px 5px);border:1px solid #7a9a6555;transform:rotate(-20deg)}.record>i{position:absolute;inset:42px;background:#d2ff00;border-radius:50%}.record>i::after{content:"";position:absolute;width:7px;height:7px;background:#163c35;border-radius:50%;left:calc(50% - 3.5px);top:calc(50% - 3.5px)}.gig-type{position:relative;margin-left:auto;width:60%;padding-left:10px}.gig-type>span{display:block;font-family:ui-monospace,monospace;font-size:8px;letter-spacing:.12em;margin-bottom:4px;color:#ccd6bf}.gig-type>strong{display:block;font-family:OutDisplay,Impact,sans-serif;font-weight:800;font-size:clamp(23px,8cqw,33px);line-height:.86;letter-spacing:-.01em}.street-image{object-position:60% 50%}.street-shade{background:linear-gradient(90deg,#06090899,#06090808 85%),linear-gradient(0deg,#060908b8,transparent 32%)}
 @media(max-height:800px) and (min-width:761px){.jazz-poster{height:82px}}
 @media(max-width:760px){.jazz-poster{height:88px;padding:10px 12px}.record{left:-28px;width:112px;height:112px}.record>i{inset:37px}.gig-type{width:65%;padding-left:14px}.gig-type>span{font-size:7px}.gig-type>strong{font-size:25px}.street-image{object-position:64% center}.street-shade{background:linear-gradient(90deg,#0609089e,#06090825),linear-gradient(0deg,#060908c7,transparent 55%)}}
+
+/* The promise stays still while four different ways to go out crossfade. */
+.hero h1{display:block;font-size:clamp(80px,12.9vw,200px);line-height:.88;margin:0 0 28px;letter-spacing:-.025em}
+.hero-question{display:block;font-size:.39em;line-height:1.15;letter-spacing:-.015em;margin-bottom:.25em;white-space:nowrap}
+.hero-answer{display:block;color:var(--acid);white-space:nowrap}
+.hero .eyebrow{margin-bottom:28px;font-size:10px;letter-spacing:.1em}
+.hero-backdrop>img{opacity:0;transition:opacity 1.4s ease;object-position:58% center}
+.hero-backdrop>img.scene-visible{opacity:1}
+.hero-shade{background:linear-gradient(90deg,rgba(9,11,11,.79),rgba(9,11,11,.49) 43%,rgba(9,11,11,.13)),linear-gradient(180deg,rgba(9,11,11,.35),transparent 25%,transparent 65%,#090b0b)}
+.scene-controls{display:flex;gap:16px;margin-top:38px;flex-wrap:wrap}
+.scene-controls button{display:flex;flex-direction:column;gap:9px;min-height:52px;padding:9px 0;background:transparent;border:0;border-top:1px solid #e8ece059;color:#d5dacd;font-size:11px;text-align:left;transition:color .25s,border-color .25s}
+.scene-controls button[aria-pressed=true]{color:var(--acid);border-color:var(--acid)}
+.scene-controls button:hover{color:#fff;border-color:#fff}
+.scene-number{font-family:ui-monospace,monospace;font-size:9px;opacity:.75}
+.motion-off .hero-backdrop>img{transition:none}
+@media(min-width:1700px){.hero h1{font-size:205px}}
+@media(max-width:1050px) and (min-width:761px){.hero h1{font-size:12.5vw}.scene-controls{gap:12px}.scene-controls button{font-size:10px}.hero-bottom>p{font-size:16px}}
+@media(max-width:760px){.hero h1{font-size:26vw;margin-bottom:22px}.hero-question{font-size:.39em}.hero .eyebrow{margin-bottom:24px;font-size:9px}.hero-bottom>p{font-size:15px;max-width:350px}.scene-controls{margin-top:28px;gap:0;justify-content:space-between;max-width:390px}.scene-controls button{font-size:10px;min-width:58px}.hero-backdrop>img{object-position:60% center}.hero-shade{background:linear-gradient(90deg,rgba(9,11,11,.76),rgba(9,11,11,.35)),linear-gradient(180deg,rgba(9,11,11,.2),transparent 55%,#090b0b)}}
+@media(prefers-reduced-motion:reduce){.hero-backdrop>img{transition:none}}
