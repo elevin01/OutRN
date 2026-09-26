@@ -4,7 +4,7 @@ import { readFile, access } from "node:fs/promises";
 import { resolve } from "node:path";
 test("Pages serves a prerendered landing page with subpath-safe assets", async () => {
   const html = await readFile("index.html", "utf8");
-  assert.match(html, /aria-label="Got free time\? Try going out \(rn\)\."/);
+  assert.match(html, /aria-label="Got free time\? Try going out Right Now\."/);
   assert.match(html, /action="https:\/\/formspree.io\/f\/myeybdge"/);
   assert.match(html, /name="_gotcha"/);
   assert.match(html, /Join the waitlist/);

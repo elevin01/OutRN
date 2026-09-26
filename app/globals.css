@@ -62,8 +62,10 @@
 .hero h1{font-size:clamp(80px,10.7vw,170px)}.hero-answer>span{display:block}.hero-question{font-size:.39em}
 @media(max-width:760px){.hero h1{font-size:23vw}}
 
-/* Make the invitation the focal point, with (rn) as a brand aside. */
-.rn-aside{display:inline!important;font-size:.44em;letter-spacing:-.015em;white-space:nowrap;vertical-align:baseline}
+/* Spell out the promise while making the RN in OutRN recognizable. */
+.right-now{display:inline;white-space:nowrap;color:var(--paper)}
+.rn-initial{color:var(--acid)}
+.hero-answer .right-now{font-size:.56em;letter-spacing:-.015em;vertical-align:baseline}
 
 /* One display moment, then a readable editorial hierarchy. */
 :root{
@@ -80,7 +82,7 @@
 .idea-story h2{max-width:16ch}
 .idea-summary{font-size:var(--type-body);line-height:1.65;color:#bac1b5;max-width:39ch;margin-top:26px}
 .idea-invitation{font-size:var(--type-subhead);line-height:1.25;letter-spacing:-.025em;font-weight:600;color:var(--acid);margin:26px 0 22px}
-.idea-invitation>span{font-size:.8em;white-space:nowrap}
+.idea-invitation .right-now{font-size:1em}
 .street{position:relative;margin:0;min-width:0;height:560px;overflow:hidden;background:#252b23;isolation:isolate}
 .street-image{position:absolute;inset:-60px 0;width:100%;height:calc(100% + 120px);object-fit:cover;object-position:62% center;transform:translateY(var(--photo-shift));will-change:transform}
 .street-shade{position:absolute;inset:0;background:linear-gradient(0deg,#080d0b9c,transparent 45%)}

@@ -27,6 +27,10 @@ const picks = [
   },
 ];
 
+function RightNow() {
+  return <span className="right-now"><span className="rn-initial">R</span>ight <span className="rn-initial">N</span>ow</span>;
+}
+
 export default function Home() {
   const [active, setActive] = useState(0);
   const [autoplayStopped, setAutoplayStopped] = useState(false);
@@ -107,7 +111,7 @@ export default function Home() {
 
   return <main ref={root} className={motionOff ? "motion-off" : ""}>
     <a href="#main-content" className="skip-link">Skip to content</a>
-    <header className="nav"><a className="wordmark" href="#" aria-label="OutRN home">OUT<span>RN</span></a><span className="nav-note">TRY GOING OUT (rn).</span><a className="nav-link" href="#waitlist">Join the waitlist</a></header>
+    <header className="nav"><a className="wordmark" href="#" aria-label="OutRN home">OUT<span>RN</span></a><span className="nav-note">TRY GOING OUT <RightNow/>.</span><a className="nav-link" href="#waitlist">Join the waitlist</a></header>
     <section className="hero" id="main-content">
       <div className="hero-backdrop" aria-hidden="true">
         {picks.map((item, index) => <img key={item.name} src={item.image} alt="" className={active === index ? "scene-visible" : ""} fetchPriority={index === 0 ? "high" : "low"} loading={index === 0 ? "eager" : "lazy"} decoding="async"/>)}
@@ -115,7 +119,7 @@ export default function Home() {
       </div>
       <div className="hero-copy">
         <p className="eyebrow intro-enter">THE APP FOR FINDING THINGS TO DO.</p>
-        <h1 aria-label="Got free time? Try going out (rn)."><span className="hero-question">GOT FREE TIME?</span><span className="hero-answer"><span>TRY GOING</span><span>OUT <span className="rn-aside">(rn)</span></span></span></h1>
+        <h1 aria-label="Got free time? Try going out Right Now."><span className="hero-question">GOT FREE TIME?</span><span className="hero-answer"><span>TRY GOING</span><span>OUT <RightNow/></span></span></h1>
         <div className="hero-bottom intro-enter">
           <p>At least three things worth going out for.<br/>Curated for you. Nearby. Ready right now.</p>
           <div className="cta-row"><a className="button" href="#waitlist">Join the waitlist</a><span className="free-note">OutRN is free. Always.</span></div>
@@ -152,13 +156,13 @@ export default function Home() {
           <p className="eyebrow">LESS SEARCHING. MORE GOING.</p>
           <h2>Don’t spend all your free time finding plans.</h2>
           <p className="idea-summary">Open OutRN for at least three things to do nearby, curated for you and ready right now.</p>
-          <p className="idea-invitation">Try going out <span>(rn).</span></p>
+          <p className="idea-invitation">Try going out <RightNow/>.</p>
           <a className="button" href="#waitlist">Join the waitlist</a>
         </div>
         <figure className="street reveal">
           <img className="street-image" src={daytimeImage} alt="People crossing a sunlit street toward a café and gallery" loading="lazy"/>
           <div className="street-shade"/>
-          <figcaption>Nothing planned.<br/>Still a good afternoon.</figcaption>
+          <figcaption>Nothing planned?<br/>Your perfect day is a click away.</figcaption>
         </figure>
       </div>
       <div className="plan-journey reveal">
@@ -171,6 +175,6 @@ export default function Home() {
       </div>
     </section>
     <section className="waitlist" id="waitlist"><div className="waitlist-copy reveal"><p className="eyebrow">YOUR NEXT GOOD PLAN STARTS HERE.</p><h2>Try OutRN.</h2><p>Join the waitlist. We’ll let you know when you can try OutRN near you.</p><p className="waitlist-free">Free to use. Now and always.</p></div><div className="signup-panel reveal"><WaitlistForm/></div></section>
-    <footer><a className="wordmark" href="#" aria-label="Back to top">OUT<span>RN</span></a><p>Got free time? Try going out (rn).</p><span className="micro">© {new Date().getFullYear()} OUT RN</span></footer>
+    <footer><a className="wordmark" href="#" aria-label="Back to top">OUT<span>RN</span></a><p>Got free time? Try going out <RightNow/>.</p><span className="micro">© {new Date().getFullYear()} OUT RN</span></footer>
   </main>;
 }
