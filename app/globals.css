@@ -157,7 +157,10 @@
 @media(max-width:760px){.discovery{height:612px;max-width:450px}.card-deck{inset:42px 8% 66px}.pick-artwork{height:140px}.card-content{padding:15px 18px}.card-top{padding:12px 15px}.card-category{font-size:8px}.card-walk{font-size:10px}.artwork-type small{font-size:6px}.artwork-type strong{font-size:35px}.artwork-music .artwork-type strong{font-size:36px}.artwork-art .artwork-type strong{font-size:38px}.artwork-food .artwork-type strong{font-size:31px}.artwork-outside .artwork-type strong{font-size:30px}.artwork-type>span{font-size:6px}}
 @media(max-width:365px){.discovery{height:584px}.card-deck{inset:40px 6% 66px}.pick-artwork{height:124px}.card-content{padding:13px 15px}.card-top{padding:11px 13px}.card-category{font-size:7px}.card-walk{font-size:9px}.artwork-type{left:13px;top:13px}.artwork-music .artwork-type{left:51%;top:13px}.artwork-type strong,.artwork-music .artwork-type strong,.artwork-art .artwork-type strong{font-size:31px}.artwork-food .artwork-type strong{font-size:27px}.artwork-outside .artwork-type strong{font-size:27px}.artwork-type small{font-size:5px}.artwork-type>span,.artwork-music .artwork-type>span{display:none}.card-facts{margin-top:11px;padding:10px 0}.card-facts dd{font-size:10px}.card-facts>div+div{padding-left:10px}.card-content .local-note{margin:10px 0 12px}.card-price strong{font-size:12px}}
 /* Keep the longest local tip and the footer inside the card at every size. */
-.discovery{height:710px}.pick-artwork{height:140px}.card-content h2{font-size:clamp(29px,10.5cqw,44px)}.card-facts{margin-top:11px;padding:9px 0}.card-content .local-note{margin:10px 0 12px}
-@media(max-height:800px) and (min-width:1051px){.discovery{height:656px}.pick-artwork{height:120px}.card-content h2{font-size:40px}.pick-index{margin-bottom:6px}}
-@media(max-width:760px){.discovery{height:670px}.pick-artwork{height:140px}}
+.discovery{height:650px}.pick-artwork{height:140px}.card-content h2{font-size:clamp(29px,10.5cqw,44px)}.card-facts{margin-top:11px;padding:9px 0}.card-content .local-note{margin:10px 0 12px}
+@media(max-height:800px) and (min-width:1051px){.discovery{height:620px}.pick-artwork{height:120px}.card-content h2{font-size:40px}.pick-index{margin-bottom:6px}}
+@media(max-width:760px){.discovery{height:650px}.pick-artwork{height:140px}}
 @media(max-width:365px){.discovery{height:650px}.pick-artwork{height:124px}}
+
+.card-facts dd{font-size:12px}.card-content .local-note{font-size:12px}.pick-index{font-size:8px}.local-note>span{font-size:8px}.card-price strong{font-size:14px}
+@media(max-width:365px){.card-facts dd{font-size:11px}.card-content .local-note{font-size:11px}.card-price strong{font-size:12px}}
