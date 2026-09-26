@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type PointerEvent } from "react";
 import WaitlistForm from "./waitlist-form";
+import CardArtwork from "./card-artwork";
 
 const daytimeImage = `${import.meta.env.BASE_URL}public/images/city-afternoon.webp`;
 const picks = [
@@ -133,16 +134,14 @@ export default function Home() {
         <div className="card-deck" aria-label="Example nearby outings" onPointerDown={event=>{pointerStart.current={x:event.clientX,y:event.clientY};swiped.current=false;}} onPointerUp={finishSwipe} onPointerCancel={()=>{pointerStart.current=null;}} onClickCapture={event=>{if(swiped.current){event.preventDefault();event.stopPropagation();swiped.current=false;}}}>
           {picks.map((pick,index)=><article key={pick.name} className={`outing-card ${pick.type}`} data-position={(index-active+picks.length)%picks.length} aria-hidden={index!==active}>
             <button className="card-hit-area" tabIndex={index===active ? 0 : -1} aria-label={index===active ? `Next outing after ${pick.name}` : `Show ${pick.name} outing`} onClick={()=>selectPick(index===active ? active+1 : index)}/>
-            <div className="card-top"><span className="micro">{pick.walk}</span><span className="micro">{pick.category}</span></div>
-            {pick.type === "music" && <div className="jazz-poster" aria-hidden="true"><div className="record"><i/></div><div className="gig-type"><span>LIVE / TONIGHT</span><strong>ONE<br/>MORE SET.</strong></div></div>}
-            {pick.type === "art" && <div className="gallery-print" aria-hidden="true"><i/><i/><i/><span>AFTER HOURS / EXHIBITION 03</span></div>}
-            {pick.type === "food" && <div className="dinner-slip" aria-hidden="true"><span>WALK-INS WELCOME</span><strong>ORDER SOMETHING GOOD.</strong><span>THE KITCHEN’S STILL ON.</span></div>}
-            {pick.type === "outside" && <div className="sunset-poster" aria-hidden="true"><i/><span>TAKE THE LONG WAY.</span></div>}
+            <div className="card-top"><span className="card-category">{pick.category}</span><span className="card-walk"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 14s5-4.5 5-8A5 5 0 003 6c0 3.5 5 8 5 8Z" stroke="currentColor" strokeWidth="1.3"/><circle cx="8" cy="6" r="1.7" stroke="currentColor" strokeWidth="1.3"/></svg>{pick.walk}</span></div>
+            <CardArtwork type={pick.type}/>
             <div className="card-content">
+              <div className="pick-index"><span>OUTRN PICKS</span><span>0{index + 1}</span></div>
               <h2>{pick.title.map(line=><span key={line}>{line}</span>)}</h2>
               <dl className="card-facts">{pick.facts.map(fact=><div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
-              <p className="local-note"><span>LOCAL TAKE</span>{pick.note}</p>
-              <div className="card-price"><span><span className="price-label">{pick.priceLabel}</span><strong>{pick.price}</strong></span><span className="directions-preview">Next idea <span aria-hidden="true">↗</span></span></div>
+              <p className="local-note"><span>WORTH KNOWING</span>{pick.note}</p>
+              <div className="card-price"><span><span className="price-label">{pick.priceLabel}</span><strong>{pick.price}</strong></span><span className="directions-preview">Next pick <span className="next-pick-arrow" aria-hidden="true">↗</span></span></div>
             </div>
           </article>)}
         </div>
