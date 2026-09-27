@@ -10,7 +10,7 @@
     "dev": "vite",
     "build": "vite build && vite build --ssr prerender.tsx --outDir ../.pages-ssr && node scripts/publish-pages.mjs",
     "start": "vite preview",
-    "test": "npm run build && node --test tests/github-pages.test.mjs",
+    "test": "npm run build && node --test tests/github-pages.test.mjs tests/theme.test.mjs",
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate",
     "build:pages": "npm run build"

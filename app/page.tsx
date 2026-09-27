@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type PointerEvent } from "react";
 import WaitlistForm from "./waitlist-form";
 import CardArtwork from "./card-artwork";
+import ThemeToggle from "./theme-toggle";
 
 const daytimeImage = `${import.meta.env.BASE_URL}public/images/city-afternoon.webp`;
 const picks = [
@@ -112,7 +113,7 @@ export default function Home() {
 
   return <main ref={root} className={motionOff ? "motion-off" : ""}>
     <a href="#main-content" className="skip-link">Skip to content</a>
-    <header className="nav"><a className="wordmark" href="#" aria-label="OutRN home">OUT<span>RN</span></a><span className="nav-note">TRY GOING OUT <RightNow/>.</span><a className="nav-link" href="#waitlist">Join the waitlist</a></header>
+    <header className="nav"><a className="wordmark" href="#" aria-label="OutRN home"><span className="brand-out">out</span><span className="brand-rn">RN</span></a><span className="nav-note">TRY GOING OUT <RightNow/>.</span><div className="nav-actions"><ThemeToggle/><a className="nav-link" href="#waitlist">Join the waitlist</a></div></header>
     <section className="hero" id="main-content">
       <div className="hero-backdrop" aria-hidden="true">
         {picks.map((item, index) => <img key={item.name} src={item.image} alt="" className={active === index ? "scene-visible" : ""} fetchPriority={index === 0 ? "high" : "low"} loading={index === 0 ? "eager" : "lazy"} decoding="async"/>)}
@@ -120,7 +121,7 @@ export default function Home() {
       </div>
       <div className="hero-copy">
         <p className="eyebrow intro-enter">THE APP FOR FINDING THINGS TO DO.</p>
-        <h1 aria-label="Got free time? Try going out Right Now."><span className="hero-question">GOT FREE TIME?</span><span className="hero-answer"><span>TRY GOING</span><span>OUT <RightNow/></span></span></h1>
+        <h1 aria-label="Got free time? Try going out Right Now."><span className="hero-question">Got free time?</span><span className="hero-answer"><span>Try going</span><span>out <RightNow/></span></span></h1>
         <div className="hero-bottom intro-enter">
           <p>At least three things worth going out for.<br/>Curated for you. Nearby. Ready right now.</p>
           <div className="cta-row"><a className="button" href="#waitlist">Join the waitlist</a><span className="free-note">OutRN is free. Always.</span></div>
@@ -174,6 +175,6 @@ export default function Home() {
       </div>
     </section>
     <section className="waitlist" id="waitlist"><div className="waitlist-copy reveal"><p className="eyebrow">YOUR NEXT GOOD PLAN STARTS HERE.</p><h2>Try OutRN.</h2><p>Join the waitlist. We’ll let you know when you can try OutRN near you.</p><p className="waitlist-free">Free to use. Now and always.</p></div><div className="signup-panel reveal"><WaitlistForm/></div></section>
-    <footer><a className="wordmark" href="#" aria-label="Back to top">OUT<span>RN</span></a><p>Got free time? Try going out <RightNow/>.</p><span className="micro">© {new Date().getFullYear()} OUT RN</span></footer>
+    <footer><a className="wordmark" href="#" aria-label="Back to top"><span className="brand-out">out</span><span className="brand-rn">RN</span></a><p>Got free time? Try going out <RightNow/>.</p><span className="micro">© {new Date().getFullYear()} OUT RN</span></footer>
   </main>;
 }
