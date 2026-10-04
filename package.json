@@ -13,7 +13,9 @@
     "test": "npm run build && node --test tests/github-pages.test.mjs tests/theme.test.mjs",
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate",
-    "build:pages": "npm run build"
+    "build:pages": "npm run build",
+    "build:netlify": "SITE_TARGET=netlify npm run build",
+    "test:netlify": "npm run build:netlify && node --test tests/netlify.test.mjs tests/theme.test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
