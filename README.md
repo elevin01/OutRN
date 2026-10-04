@@ -1,16 +1,24 @@
 # OutRN
 
-Public landing page hosted on **GitHub Pages**: https://elevin01.github.io/OutRN/
+Public landing page. GitHub Pages URL: https://elevin01.github.io/OutRN/
 
 ## Hosting
 
 GitHub Pages serves `main` → `/ (root)`. The root `index.html`, `.nojekyll`, `site-assets/`, and `public/` contain the deployable static website. No ChatGPT sign-in or ChatGPT Sites backend is used by this build.
 
+### Netlify
+
+The root `netlify.toml` sets `npm run build:netlify`, publishes `.pages-build`, and skips the Next.js runtime. This is a Vite static site; the older Next.js prototype is not used for deployment. The config overrides the previous `.next` publish directory in Netlify's UI. You can remove `@netlify/plugin-nextjs` from Netlify's Build plugins settings; the skip flag also handles it while still installed.
+
+Netlify builds use `/` asset paths and include prerendered HTML, JavaScript, CSS, fonts, images, and the theme initializer in the publish folder. The canonical URL uses Netlify's production `URL` environment variable, or `SITE_URL` if explicitly set. A local Netlify build without either omits the canonical tag.
+
+After the deployment fix PR is merged, redeploy the latest `main` commit in Netlify. Run `npm run test:netlify` locally to check the publish folder. This build does not overwrite the checked-in GitHub Pages output.
+
 ## Develop and publish changes
 
 Use Node 22.13 or later. Run `npm ci`, then `npm run dev`.
 
-After editing the page, run `npm run build:pages` and commit the changed source **and** generated `index.html` / `site-assets/`. Push to `main`; the existing GitHub Pages deployment publishes these files. The build prerenders the landing page, so its content is present before JavaScript loads. Assets use the `/OutRN/` base path.
+After editing the page, run `npm run build:pages` and commit the changed source **and** generated `index.html` / `site-assets/`. Open a PR with the changes; after merging to `main`, the existing GitHub Pages deployment publishes these files. The build prerenders the landing page, so its content is present before JavaScript loads. Assets use the `/OutRN/` base path.
 
 `app/page.tsx` and `app/globals.css` contain the page; `app/waitlist-form.tsx` contains the Formspree form. `web/` contains the browser entry, prerender entry, and configuration. Older server prototype files remain in the repository but are not imported by the Pages build.
 

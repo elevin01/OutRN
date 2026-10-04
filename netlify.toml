@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build:netlify"
+  publish = ".pages-build"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # The repository retains a Next.js prototype, but this site builds with Vite.
+  # Also skips the Next.js plugin if it remains installed in Netlify's UI.
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
