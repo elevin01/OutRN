@@ -1,16 +1,17 @@
-/* App brand: warm paper, charcoal, sage, and the coral RN badge. */
+/* Scout identity: warm paper, charcoal, petrol teal, and sky accents. */
 :root{
   color-scheme:light;
   --ink:#f7f5ef;--paper:#252b25;--muted:#626b60;--line:#d4d8cd;
-  --brand:#f36b3f;--accent:#b53d1c;--surface:#ffffff;--soft:#e5eddf;
-  --button-ink:#20251f;--brand-hover:#ff835b;--error:#aa301f;
+  --brand:#15575a;--accent:#15575a;--surface:#ffffff;--soft:#cfe7ee;
+  --button-ink:#f7f5ef;--brand-hover:#10474a;--brand-glow:#15575a12;--error:#aa301f;
   --hero-wash:linear-gradient(90deg,#f7f5eff5 0%,#f7f5efe8 32%,#f7f5efa3 63%,#f7f5ef42),linear-gradient(0deg,#f7f5ef,transparent 40%);
   --card-shadow:0 24px 65px #252b2526,0 2px 6px #252b251a;
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
   --ink:#20251f;--paper:#f7f5ef;--muted:#bac3b5;--line:#485143;
-  --accent:#ff9a78;--surface:#2a3228;--soft:#354431;--error:#ffad95;
+  --brand:#cfe7ee;--accent:#cfe7ee;--surface:#2a3228;--soft:#314446;--error:#ffad95;
+  --button-ink:#15575a;--brand-hover:#e5f1f5;--brand-glow:#cfe7ee12;
   --hero-wash:linear-gradient(90deg,#20251ff5 0%,#20251fe8 32%,#20251f9c 63%,#20251f55),linear-gradient(0deg,#20251f,transparent 40%);
   --card-shadow:0 24px 65px #0006,0 2px 6px #0004;
 }
@@ -19,9 +20,8 @@ body{background:var(--ink);color:var(--paper)}
 a:focus-visible,button:focus-visible,input:focus-visible{outline-color:var(--accent)}
 .skip-link{background:var(--brand);color:var(--button-ink);border-radius:8px}
 .nav{border-color:var(--line)}
-.wordmark{display:inline-flex;align-items:center;gap:5px;font-family:OutSans,Arial,sans-serif;font-size:32px;font-weight:600;letter-spacing:-1.8px;line-height:1}
-.wordmark .brand-out{color:var(--paper)}
-.wordmark .brand-rn{display:inline-grid;place-items:center;background:var(--brand);color:#20251f;font-size:17px;letter-spacing:-.6px;min-width:37px;height:31px;border-radius:7px;padding:0 5px}
+.wordmark{display:inline-flex;align-items:center;flex-shrink:0;color:var(--accent);line-height:1}
+.brand-lockup{display:block;width:116px;height:34px}
 .nav-note{color:var(--muted)}
 .nav-actions{display:flex;align-items:center;gap:24px}
 .nav-link{color:var(--paper);border-color:var(--line)}
@@ -55,7 +55,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline-color:var(--acc
 .orbit-field{opacity:.4}
 .orbit-ring,.ring-b{border-color:var(--line)}
 .orbit-line{background:var(--line)}
-.orbit-sweep{background:conic-gradient(from 0deg,transparent 290deg,#f36b3f12 359deg,transparent)}
+.orbit-sweep{background:conic-gradient(from 0deg,transparent 290deg,var(--brand-glow) 359deg,transparent)}
 .orbit-track i{background:var(--brand);box-shadow:none}
 .outing-card{box-shadow:var(--card-shadow);border-color:#c9d0c288}
 .outing-card.music{background:#f4f5ed;--card-ink:#294b3b;--card-muted:#596a58;--card-rule:#294b3b30}
@@ -70,7 +70,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline-color:var(--acc
 [data-theme="dark"] .next-pick-arrow{color:#20251f}
 .card-hit-area:focus-visible{outline-color:var(--card-ink)}
 .card-hit-area:hover{box-shadow:inset 0 0 0 2px var(--card-rule)}
-.artwork-seal{background:var(--brand)}
+.artwork-seal{background:var(--brand);color:var(--button-ink);border-color:var(--brand)}
 .street{border-radius:16px;background:var(--soft)}
 .street figcaption{color:#fff}.street-shade{background:linear-gradient(0deg,#20251fbd,transparent 50%)}
 .plan-journey,footer{border-color:var(--line)}
@@ -84,7 +84,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline-color:var(--acc
 .success h3{color:var(--paper);font-family:OutSans,Arial,sans-serif;font-size:36px;line-height:1.15;letter-spacing:-.035em}
 @media(max-width:1050px) and (min-width:761px){.nav-note{display:none}.hero h1{font-size:6.8vw}.nav-actions{gap:20px}}
 @media(max-width:760px){
-  .wordmark{font-size:28px;gap:4px}.wordmark .brand-rn{font-size:15px;min-width:33px;height:28px;border-radius:6px}
+  .brand-lockup{width:100px;height:30px}
   .nav-actions{gap:12px}.theme-toggle{padding:8px;min-width:42px}.theme-toggle>span{display:none!important}
   .hero h1{font-size:14.6vw;line-height:1.06;margin-bottom:24px}.hero-question{font-size:.43em}
   .hero-shade{background:linear-gradient(90deg,var(--ink),transparent 170%),linear-gradient(0deg,var(--ink),transparent 80%)}
