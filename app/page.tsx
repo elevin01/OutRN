@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type PointerEvent } from "react";
 import WaitlistForm from "./waitlist-form";
 import CardArtwork from "./card-artwork";
 import ThemeToggle from "./theme-toggle";
+import BrandWordmark from "./brand-wordmark";
 
 const daytimeImage = `${import.meta.env.BASE_URL}public/images/city-afternoon.webp`;
 const picks = [
@@ -113,7 +114,7 @@ export default function Home() {
 
   return <main ref={root} className={motionOff ? "motion-off" : ""}>
     <a href="#main-content" className="skip-link">Skip to content</a>
-    <header className="nav"><a className="wordmark" href="#" aria-label="OutRN home"><span className="brand-out">out</span><span className="brand-rn">RN</span></a><span className="nav-note">TRY GOING OUT <RightNow/>.</span><div className="nav-actions"><ThemeToggle/><a className="nav-link" href="#waitlist">Join the waitlist</a></div></header>
+    <header className="nav"><a className="wordmark" href="#" aria-label="outrn home"><BrandWordmark/></a><span className="nav-note">TRY GOING OUT <RightNow/>.</span><div className="nav-actions"><ThemeToggle/><a className="nav-link" href="#waitlist">Join the waitlist</a></div></header>
     <section className="hero" id="main-content">
       <div className="hero-backdrop" aria-hidden="true">
         {picks.map((item, index) => <img key={item.name} src={item.image} alt="" className={active === index ? "scene-visible" : ""} fetchPriority={index === 0 ? "high" : "low"} loading={index === 0 ? "eager" : "lazy"} decoding="async"/>)}
@@ -175,6 +176,6 @@ export default function Home() {
       </div>
     </section>
     <section className="waitlist" id="waitlist"><div className="waitlist-copy reveal"><p className="eyebrow">YOUR NEXT GOOD PLAN STARTS HERE.</p><h2>Try OutRN.</h2><p>Join the waitlist. We’ll let you know when you can try OutRN near you.</p><p className="waitlist-free">Free to use. Now and always.</p></div><div className="signup-panel reveal"><WaitlistForm/></div></section>
-    <footer><a className="wordmark" href="#" aria-label="Back to top"><span className="brand-out">out</span><span className="brand-rn">RN</span></a><p>Got free time? Try going out <RightNow/>.</p><span className="micro">© {new Date().getFullYear()} OUT RN</span></footer>
+    <footer><a className="wordmark" href="#" aria-label="outrn, back to top"><BrandWordmark/></a><p>Got free time? Try going out <RightNow/>.</p><span className="micro">© {new Date().getFullYear()} outrn</span></footer>
   </main>;
 }
