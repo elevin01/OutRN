@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
-import { examplePlaces, formatClock, formatDuration, recommend, type Fit, type Miss } from "./feasibility";
+import { examplePlaces, formatClock, formatDuration, recommend, travelLabel, type Fit, type Miss, type Plan } from "./feasibility";
 
 const windows = [
   { minutes: 60, label: "1 hour", words: "an hour" }, { minutes: 120, label: "2 hours", words: "two hours" },
@@ -23,54 +23,106 @@ const subscribe = (onChange: () => void) => { const timer = window.setInterval(o
 const currentMinute = () => Math.floor(Date.now() / 60_000);
 const noClock = () => null;
 
-function Timeline({ fit, nowMin, windowMin }: { fit: Fit; nowMin: number; windowMin: number }) {
-  const { place, wait } = fit;
+const opening = (stop: Fit) => stop.endsBy === "show" ? `Starts at ${formatClock(stop.start)}` : stop.wait > 0 ? `Opens at ${formatClock(stop.start)}` : `Open until ${formatClock(stop.closes)}`;
+
+function Worked({ plan, nowMin, windowMin }: { plan: Plan; nowMin: number; windowMin: number }) {
+  const { stops, spare } = plan;
+  const single = stops.length === 1 ? stops[0] : null;
   const deadline = nowMin + windowMin;
-  const isShow = fit.endsBy === "show";
-  // The bar shows the usual length of a visit, and whatever is left after it as time to spare.
-  const stay = isShow ? fit.useful : Math.min(fit.useful, place.typical);
-  const spare = deadline - (fit.start + stay);
-  const roomy = stay < fit.useful;
-  const byWalk = place.travelBy === "walk";
-  const endLabel = isShow ? "Ends" : fit.endsBy === "closing" ? "Closes" : "Time’s up";
-  const journey = byWalk ? `Leave now and walk ${place.travelMin} minutes.` : `Leave now and take the subway for ${place.travelMin} minutes.`;
-  const visit = isShow
-    ? `It starts at ${formatClock(fit.start)} and runs ${formatDuration(fit.useful)}, so you’d be out by ${formatClock(fit.end)}.`
-    : `${wait > 0 ? `It opens at ${formatClock(fit.start)}, and then you` : "You"}’d have ${formatDuration(fit.useful)} there before ${fit.endsBy === "closing" ? "it closes" : "your time is up"}.`;
+  const last = stops[stops.length - 1];
+  const closedOut = last.endsBy === "closing" && spare > 0;
+
+  let summary: string;
+  if (single) {
+    const journey = single.travelBy === "walk" ? `Leave now and walk ${single.travelMin} minutes.` : `Leave now and take the subway for ${single.travelMin} minutes.`;
+    summary = single.endsBy === "show"
+      ? `${journey} It starts at ${formatClock(single.start)} and runs ${formatDuration(single.useful)}, so you’d be out by ${formatClock(single.end)}.`
+      : `${journey} ${single.wait > 0 ? `It opens at ${formatClock(single.start)}, and then you` : "You"}’d have ${formatDuration(single.useful)} there before ${single.endsBy === "closing" ? "it closes" : "your time is up"}.`;
+  } else {
+    summary = `Leave now. ${plan.why}${spare <= 0 ? `, which uses all of your ${formatDuration(windowMin)}.` : closedOut ? `, when the last stop closes.` : `, with ${formatDuration(spare)} in hand.`}`;
+  }
+
   return (
-    <div className={`timeline-block ticket-${place.group}`}>
-      <h3>{place.name}, worked out</h3>
-      <p className="timeline-summary">{journey} {visit}</p>
-      <div className="timeline" aria-hidden="true">
-        <div className="seg seg-walk" style={{ flexGrow: place.travelMin }}>
-          <span className="seg-bar"><span>{byWalk ? "Walk" : "Subway"}</span></span>
-          <span className="seg-tick"><b>{formatClock(nowMin)}</b>Leave</span>
-        </div>
-        {wait > 0 && <div className="seg seg-wait" style={{ flexGrow: wait }}>
-          <span className="seg-bar"><span>Wait</span></span>
-          <span className="seg-tick"><b>{formatClock(fit.arrive)}</b>Arrive</span>
-        </div>}
-        <div className="seg seg-there" style={{ flexGrow: stay }}>
-          <span className="seg-bar"><span>{roomy ? "About " : ""}{formatDuration(stay)} there</span></span>
-          <span className="seg-tick"><b>{formatClock(fit.start)}</b>{isShow ? "Starts" : wait > 0 ? "Opens" : "Arrive"}</span>
-          {(isShow || spare <= 0) && <span className="seg-tick seg-tick-end"><b>{formatClock(fit.start + stay)}</b>{endLabel}</span>}
-        </div>
+    <div className="timeline-block">
+      <h3>{single ? single.place.name : plan.title}, worked out</h3>
+      <p className="timeline-summary">{summary}</p>
+      <div className={single ? "timeline" : "timeline timeline-multi"} aria-hidden="true">
+        {stops.map((stop, i) => {
+          const isLast = i === stops.length - 1;
+          const endLabel = !single ? "Done" : stop.endsBy === "show" ? "Ends" : stop.endsBy === "closing" && spare <= 0 ? "Closes" : spare <= 0 ? "Time’s up" : "Done";
+          return [
+            <div key={`${stop.place.id}-go`} className="seg seg-walk" style={{ flexGrow: stop.travelMin }}>
+              <span className="seg-bar"><span>{single ? (stop.travelBy === "walk" ? "Walk" : "Subway") : `${stop.travelMin} min`}</span></span>
+              {i === 0 && <span className="seg-tick"><b>{formatClock(nowMin)}</b>Leave</span>}
+            </div>,
+            stop.wait > 0 && <div key={`${stop.place.id}-wait`} className="seg seg-wait" style={{ flexGrow: stop.wait }}>
+              <span className="seg-bar"><span>Wait</span></span>
+              {single && <span className="seg-tick"><b>{formatClock(stop.arrive)}</b>Arrive</span>}
+            </div>,
+            <div key={stop.place.id} className={`seg seg-there ticket-${stop.place.group}`} style={{ flexGrow: stop.stay }}>
+              <span className="seg-bar">{single
+                ? <span>{stop.stay < stop.useful ? "About " : ""}{formatDuration(stop.stay)} there</span>
+                : <><b>{i + 1}</b><span>{stop.place.kind}</span></>}</span>
+              {(single || i > 0) && <span className={single || !isLast ? "seg-tick" : "seg-tick seg-tick-start"}><b>{formatClock(stop.start)}</b>{single ? (stop.endsBy === "show" ? "Starts" : stop.wait > 0 ? "Opens" : "Arrive") : ""}</span>}
+              {isLast && <span className="seg-tick seg-tick-end"><b>{formatClock(stop.start + stop.stay)}</b>{endLabel}</span>}
+            </div>,
+          ];
+        })}
         {spare > 0 && <div className="seg seg-after" style={{ flexGrow: spare }}>
-          <span className="seg-bar"><span>{spare >= windowMin / 5 ? `${formatDuration(spare)} to spare` : ""}</span></span>
+          <span className="seg-bar"><span>{closedOut ? "Closed by then" : `${formatDuration(spare)} in hand`}</span></span>
           {spare >= windowMin / 6 && <span className="seg-tick seg-tick-end"><b>{formatClock(deadline)}</b>Time’s up</span>}
         </div>}
       </div>
-      <dl className="checks">
-        <div><dt>Can you get there?</dt><dd>{place.travelMin} minutes {byWalk ? "on foot" : "by subway"}</dd></div>
-        <div><dt>{isShow ? "Does it start after you arrive?" : "Is it open when you arrive?"}</dt>
-          <dd>{isShow ? `Starts at ${formatClock(fit.start)}` : wait > 0 ? `Opens at ${formatClock(fit.start)}` : `Open until ${formatClock(fit.closes)}`}<small>{place.hoursSource}</small></dd></div>
-        <div><dt>Can you get in?</dt><dd>{place.admission}<small>{place.price}</small></dd></div>
+
+      {single ? <dl className="checks">
+        <div><dt>Can you get there?</dt><dd>{single.travelMin} minutes {single.travelBy === "walk" ? "on foot" : "by subway"}</dd></div>
+        <div><dt>{single.endsBy === "show" ? "Does it start after you arrive?" : "Is it open when you arrive?"}</dt><dd>{opening(single)}<small>{single.place.hoursSource}</small></dd></div>
+        <div><dt>Can you get in?</dt><dd>{single.place.admission}<small>{single.place.price}</small></dd></div>
         <div><dt>Is there enough time?</dt>
-          <dd>{isShow ? `Over by ${formatClock(fit.end)}` : `${roomy ? "Up to " : ""}${formatDuration(fit.useful)} there`}
-            <small>{isShow ? `It runs ${formatDuration(fit.useful)}, and you’re free until ${formatClock(deadline)}` : `People usually spend about ${formatDuration(place.typical)}`}</small></dd></div>
-      </dl>
-      {place.status === "check" && <p className="check-note"><strong>Check first:</strong> {place.checkNote}</p>}
+          <dd>{single.endsBy === "show" ? `Over by ${formatClock(single.end)}` : `${single.stay < single.useful ? "Up to " : ""}${formatDuration(single.useful)} there`}
+            <small>{single.endsBy === "show" ? `It runs ${formatDuration(single.useful)}, and you’re free until ${formatClock(deadline)}` : `People usually spend about ${formatDuration(single.place.typical)}`}</small></dd></div>
+      </dl> : <ol className="plan-stops">
+        {stops.map((stop, i) => (
+          <li key={stop.place.id}>
+            <span className={`stop-num ticket-${stop.place.group}`}>{i + 1}</span>
+            <div className="stop-when"><strong>{formatClock(stop.start)}</strong><small>{formatDuration(stop.stay)}</small></div>
+            <div><strong>{stop.place.name}</strong><small>{stop.place.price}</small></div>
+            <div>{travelLabel(stop)}<small>{i === 0 ? "from where you are" : `from stop ${i}`}{stop.wait > 0 ? `, then a ${stop.wait} min wait` : ""}</small></div>
+            <div>{opening(stop)}<small>{stop.place.hoursSource}</small></div>
+            <div>{stop.place.admission}</div>
+          </li>
+        ))}
+      </ol>}
+      {stops.filter(stop => stop.place.status === "check").map(stop => (
+        <p className="check-note" key={stop.place.id}><strong>Check first:</strong> {stops.length > 1 ? `at ${stop.place.name.charAt(0).toLowerCase() + stop.place.name.slice(1)}, ` : ""}{stop.place.checkNote}</p>
+      ))}
     </div>
+  );
+}
+
+function Ticket({ plan, selected, onSelect }: { plan: Plan; selected: boolean; onSelect: () => void }) {
+  const { stops } = plan;
+  const first = stops[0];
+  const single = stops.length === 1;
+  return (
+    <button type="button" className={`ticket ticket-${plan.lead.place.group}`} aria-pressed={selected} onClick={onSelect}>
+      <span className="ticket-body">
+        <span className="ticket-top">
+          <span>{single ? first.place.kind : `${stops.length} stops`}</span>
+          <span className={plan.status === "go" ? "stamp" : "stamp stamp-check"}>{plan.status === "go" ? "Go now" : "Check first"}</span>
+        </span>
+        <strong className="ticket-title">{single ? first.place.name : plan.title}</strong>
+        {single ? <span className="ticket-why">{plan.why}.</span> : <span className="ticket-stops">
+          {stops.map(stop => <span key={stop.place.id}><b>{formatClock(stop.start)}</b><span>{stop.place.name}</span></span>)}
+        </span>}
+        <span className="ticket-price">{single ? first.place.price : `${plan.why}.`}</span>
+      </span>
+      <span className="ticket-stub">
+        <span><small>{first.travelBy === "walk" ? "Walk" : "Subway"}</small>{first.travelMin} min</span>
+        <span><small>Arrive</small>{formatClock(first.arrive)}</span>
+        {single ? <span><small>You’d have</small>{formatDuration(first.useful)}</span> : <span><small>Done by</small>{formatClock(plan.end)}</span>}
+      </span>
+    </button>
   );
 }
 
@@ -86,14 +138,14 @@ export default function RightNow() {
   const moment = preset ?? (date ? null : saturdayEvening);
   const weekday = date ? date.getDay() : moment!.weekday;
   const nowMin = date ? date.getHours() * 60 + date.getMinutes() : moment!.nowMin;
+  const span = windows.find(option => option.minutes === windowMin)!;
 
   const result = recommend(examplePlaces, weekday, nowMin, windowMin, page);
-  const { picks, misses, fitCount } = result;
-  const selected = picks.find(pick => pick.place.id === chosen) ?? picks[0];
+  const { picks, misses, fitCount, planCount } = result;
+  const selected = picks.find(pick => pick.id === chosen) ?? picks[0];
   const shownBefore = result.page * 3;
-  const remaining = fitCount - shownBefore - picks.length;
-  const count = ["", "One", "Two", "Three"][picks.length];
-  const heading = `${count}${shownBefore > 0 ? " more" : ""} that ${picks.length === 1 ? "fits" : "fit"}`;
+  const remaining = planCount - shownBefore - picks.length;
+  const heading = `${["", "One", "Two", "Three"][picks.length]}${shownBefore > 0 ? " more" : ""} ${picks.length === 1 ? "way" : "ways"} to spend it`;
   const moreLabel = remaining >= 3 ? "Show three others" : remaining === 2 ? "Show the other two" : remaining === 1 ? "Show the other one" : "Back to the first three";
   const missSummary = missReasons.map(([reason, label]) => [misses.filter(miss => miss.reason === reason).length, label] as const)
     .filter(([n]) => n > 0).map(([n, label]) => `${n} ${label}`).join(", ");
@@ -105,7 +157,7 @@ export default function RightNow() {
       <div className="wrap">
         <h2 id="try-title" className="try-headline">
           It’s <span className="try-time">{formatClock(nowMin)}</span> on {weekdays[weekday]} and I’ve got{" "}
-          <mark key={windowMin}>{windows.find(option => option.minutes === windowMin)!.words}</mark>.
+          <mark key={windowMin}>{span.words}</mark>.
         </h2>
 
         <div className="try-top">
@@ -123,57 +175,40 @@ export default function RightNow() {
               ))}
             </div>
           </div>
-          <p className="lead">OutRN starts with the time you have. Most apps tell you what’s open. This works out what you can get to, get into and enjoy before your time runs out, so change the hours and watch the plans change.</p>
+          <p className="lead">OutRN starts with the time you have. An hour gets you one good stop nearby. Give it longer and it goes farther and strings stops together, so the time is used instead of left over.</p>
         </div>
 
         <div className="board">
           {picks.length > 0 && <div className="board-bar">
             <h3>{heading}</h3>
             <span className="stamp">Examples</span>
-            {fitCount > 3 && <p>{fitCount} of {examplePlaces.length} places fit {formatDuration(windowMin)} from {formatClock(nowMin)}.</p>}
-            {fitCount > 3 && <button type="button" className="button button-small button-outline" onClick={() => { setPage(result.page + 1); setChosen(null); }}>{moreLabel}</button>}
+            <p>{fitCount} of {examplePlaces.length} places are in reach from {formatClock(nowMin)}.</p>
+            {planCount > 3 && <button type="button" className="button button-small button-outline" onClick={() => { setPage(result.page + 1); setChosen(null); }}>{moreLabel}</button>}
           </div>}
           <ol className="tickets" aria-label={heading}>
-            {picks.map(pick => (
-              <li key={pick.place.id}>
-                <button type="button" className={`ticket ticket-${pick.place.group}`} aria-pressed={pick === selected} onClick={() => setChosen(pick.place.id)}>
-                  <span className="ticket-body">
-                    <span className="ticket-top">
-                      <span>{pick.place.kind}</span>
-                      <span className={pick.place.status === "go" ? "stamp" : "stamp stamp-check"}>{pick.place.status === "go" ? "Go now" : "Check first"}</span>
-                    </span>
-                    <strong className="ticket-title">{pick.place.name}</strong>
-                    <span className="ticket-why">{pick.why}.</span>
-                    <span className="ticket-price">{pick.place.price}</span>
-                  </span>
-                  <span className="ticket-stub">
-                    <span><small>{pick.place.travelBy === "walk" ? "Walk" : "Subway"}</small>{pick.place.travelMin} min</span>
-                    <span><small>Arrive</small>{formatClock(pick.arrive)}</span>
-                    <span><small>You’d have</small>{formatDuration(pick.useful)}</span>
-                  </span>
-                </button>
-              </li>
-            ))}
+            {picks.map(pick => <li key={pick.id}><Ticket plan={pick} selected={pick === selected} onSelect={() => setChosen(pick.id)} /></li>)}
           </ol>
 
           {picks.length === 0 && <div className="board-empty">
-            <span>None of the {examplePlaces.length} example places fits at {formatClock(nowMin)}. OutRN would tell you that too, instead of sending you to a locked door.</span>
-            <button type="button" className="button" onClick={() => { setWhen("fri-night"); restart(); }}>Try Friday at 9 PM</button>
+            {fitCount === 0
+              ? <span>None of the {examplePlaces.length} example places fits at {formatClock(nowMin)}. OutRN would tell you that too, instead of sending you to a locked door.</span>
+              : <span>Nothing open now would fill {span.words} from {formatClock(nowMin)}. A shorter stretch has more to offer.</span>}
+            {fitCount === 0 && <button type="button" className="button" onClick={() => { setWhen("fri-night"); restart(); }}>Try Friday at 9 PM</button>}
           </div>}
-          {fitCount > 0 && fitCount < 3 && <p className="board-note">
-            <span>Only {fitCount === 1 ? "one place fits" : "two places fit"} right now, so that’s what you see. OutRN doesn’t pad the list.</span>
+          {planCount > 0 && planCount < 3 && <p className="board-note">
+            <span>Only {planCount === 1 ? "one plan makes" : "two plans make"} good use of {span.words} from here, so that’s what you see. OutRN doesn’t pad the list.</span>
           </p>}
 
           <div className="board-foot">
             {misses.length > 0 && <details>
-              <summary>{misses.length} didn’t make it{missSummary ? `: ${missSummary}` : ""}</summary>
+              <summary>{misses.length} places are out{missSummary ? `: ${missSummary}` : ""}</summary>
               <ul>{misses.map(miss => <li key={miss.place.id}><span>{miss.place.name}</span><span>{miss.detail}</span></li>)}</ul>
             </details>}
             <p>{date ? "These are invented example places, not live listings. The times are worked out from your clock." : `These are invented example places, not live listings, shown for ${moment!.label}.`}</p>
           </div>
         </div>
 
-        {selected && <Timeline fit={selected} nowMin={nowMin} windowMin={windowMin} />}
+        {selected && <Worked plan={selected} nowMin={nowMin} windowMin={windowMin} />}
       </div>
     </section>
   );

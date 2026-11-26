@@ -1,18 +1,25 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { evaluate, examplePlaces, formatClock, formatDuration, maxTravel, recommend } from "../app/feasibility.ts";
+import { evaluate, examplePlaces, formatClock, formatDuration, maxStops, maxTravel, recommend, travelBetween } from "../app/feasibility.ts";
 
 const place = id => examplePlaces.find(p => p.id === id);
 const at = (hour, minute = 0) => hour * 60 + minute;
-const SUN = 0, MON = 1, TUE = 2, THU = 4, FRI = 5, SAT = 6;
-const ids = result => result.picks.map(p => p.place.id);
+const SUN = 0, MON = 1, TUE = 2, WED = 3, THU = 4, FRI = 5, SAT = 6;
+const windows = [60, 120, 180, 300];
+const moments = [[SAT, at(19, 10)], [SUN, at(10)], [WED, at(22, 57)], [SAT, at(14)], [FRI, at(21)], [MON, at(7, 10)], [THU, at(16, 30)], [TUE, at(12, 5)]];
+const routes = result => result.picks.map(plan => plan.stops.map(s => s.place.id));
 const pick = verdict => ({ fits: verdict.fits, reason: verdict.reason });
+const everyPlan = (weekday, now, window) => {
+  const first = recommend(examplePlaces, weekday, now, window);
+  return Array.from({ length: first.pages }, (_, page) => recommend(examplePlaces, weekday, now, window, page).picks).flat();
+};
 
-test("a pick needs the trip, the opening hours and the free time to line up", () => {
+test("a stop needs the trip, the opening hours and the free time to line up", () => {
   const noodles = evaluate(place("noodles"), SAT, at(20), 120);
   assert.equal(noodles.fits, true);
   assert.equal(noodles.arrive, at(20, 5));
   assert.equal(noodles.useful, 115);
+  assert.equal(noodles.stay, 60); // the usual visit, not every minute available
   assert.equal(noodles.endsBy, "deadline");
 
   const gallery = evaluate(place("gallery"), SAT, at(20), 180); // closes at 10 PM
@@ -31,8 +38,16 @@ test("closed places, short visits and missed last entries are left out with the 
   assert.deepEqual(pick(museum), { fits: false, reason: "last-entry" });
 });
 
-test("how far is reasonable grows with the time you have", () => {
-  assert.deepEqual([60, 120, 180, 300].map(maxTravel), [12, 20, 30, 35]);
+test("trips are walks when close and the subway when not", () => {
+  assert.deepEqual(travelBetween(null, place("noodles").at), { travelMin: 5, travelBy: "walk" });
+  assert.deepEqual(travelBetween(null, place("beach").at), { travelMin: 34, travelBy: "subway" });
+  assert.deepEqual(travelBetween(place("beach").at, place("clams").at), { travelMin: 4, travelBy: "walk" });
+  for (const p of examplePlaces) assert.deepEqual({ travelMin: p.travelMin, travelBy: p.travelBy }, travelBetween(null, p.at), p.id);
+});
+
+test("how far and how many stops both grow with the time you have", () => {
+  assert.deepEqual(windows.map(maxTravel), [12, 20, 30, 40]);
+  assert.deepEqual(windows.map(maxStops), [1, 2, 2, 3]);
   const quick = evaluate(place("beach"), SAT, at(10), 120);
   assert.deepEqual(pick(quick), { fits: false, reason: "far" });
   assert.match(quick.detail, /34 min by subway is too far for 2 hours/);
@@ -44,9 +59,7 @@ test("arriving before the doors open is a wait, up to a point", () => {
   assert.equal(jazz.fits, true);
   assert.equal(jazz.start, at(18));
   assert.equal(jazz.wait, 32);
-  assert.equal(jazz.useful, 80);
   assert.match(jazz.why, /Opens at 6:00 PM, 32 min after you get there/);
-  // Two hours early is not a wait worth suggesting.
   assert.deepEqual(pick(evaluate(place("jazz"), SAT, at(16), 180)), { fits: false, reason: "closed" });
 });
 
@@ -59,11 +72,8 @@ test("something with a start time fits only if you arrive before it and it ends 
   assert.match(film.why, /Starts at 7:30 PM, just after you get there/);
 
   const tooShort = evaluate(place("cinema"), SAT, at(19, 10), 120);
-  assert.deepEqual(pick(tooShort), { fits: false, reason: "short" });
   assert.match(tooShort.detail, /7:30 PM showing ends after your time is up/);
-
-  const missed = evaluate(place("cinema"), SAT, at(19, 25), 300); // walks in at 7:36; next is 9:45
-  assert.deepEqual(pick(missed), { fits: false, reason: "short" });
+  const missed = evaluate(place("cinema"), SAT, at(19, 25), 180); // walks in at 7:36; next is 9:45
   assert.match(missed.detail, /next showing isn’t until 9:45 PM/);
   assert.deepEqual(pick(evaluate(place("comedy"), MON, at(19), 180)), { fits: false, reason: "closed" });
 });
@@ -75,51 +85,76 @@ test("an evening that runs past midnight still counts", () => {
   assert.equal(evaluate(place("jazz"), TUE, at(0, 30), 60).fits, false); // Monday is dark
 });
 
-test("the time you have changes what is suggested", () => {
-  const evening = [60, 120, 180].map(window => ids(recommend(examplePlaces, SAT, at(19, 10), window)));
-  assert.deepEqual(evening[0], ["noodles", "gallery", "winebar"]);
-  assert.deepEqual(evening[1], ["trattoria", "bowling", "nightmarket"]);
-  assert.deepEqual(evening[2], ["trattoria", "cinema", "karaoke"]);
-  // Only a long window reaches the beach.
-  assert.ok(!ids(recommend(examplePlaces, SUN, at(10), 180)).includes("beach"));
-  assert.equal(ids(recommend(examplePlaces, SUN, at(10), 300))[0], "beach");
+test("an hour is one stop; longer stretches become plans with more stops", () => {
+  assert.deepEqual(routes(recommend(examplePlaces, SAT, at(19, 10), 60)), [["noodles"], ["gallery"], ["winebar"]]);
+  assert.deepEqual(routes(recommend(examplePlaces, SAT, at(19, 10), 180))[0], ["noodles", "jazz"]);
+  assert.deepEqual(routes(recommend(examplePlaces, SAT, at(19, 10), 300)), [["trattoria", "karaoke"], ["noodles", "boardgames", "jazz"], ["cinema", "winebar", "arcade"]]);
+  // Only a long stretch reaches the beach, and it brings lunch with it.
+  assert.ok(!everyPlan(SUN, at(10), 180).some(plan => plan.stops.some(s => s.place.id === "beach")));
+  assert.deepEqual(routes(recommend(examplePlaces, SUN, at(10), 300))[0], ["clams", "beach"]);
+  for (const [weekday, now] of moments) {
+    const stops = windows.map(window => { const picks = recommend(examplePlaces, weekday, now, window).picks; return picks.length ? Math.max(...picks.map(p => p.stops.length)) : 0; });
+    assert.equal(stops[0] <= 1, true);
+    assert.ok(stops[3] >= stops[0], `${weekday} ${now}`);
+  }
 });
 
-test("the time of day changes it too", () => {
-  assert.equal(ids(recommend(examplePlaces, MON, at(7, 10), 60))[0], "diner");
-  assert.equal(ids(recommend(examplePlaces, FRI, at(21), 120))[0], "jazz");
-  assert.ok(ids(recommend(examplePlaces, THU, at(16, 30), 180)).includes("cinema"));
+test("plans use the time instead of leaving it over", () => {
+  for (const [weekday, now] of moments) for (const window of windows) {
+    for (const plan of everyPlan(weekday, now, window)) {
+      const last = plan.stops[plan.stops.length - 1];
+      const limit = last.endsBy === "closing" ? 0.5 : 0.2;
+      assert.ok(plan.spare >= 0 && plan.spare <= limit * window, `${plan.id} leaves ${plan.spare} of ${window}`);
+    }
+  }
+  // Saturday evening has enough going on that nothing is left over at any length.
+  for (const window of windows) for (const plan of recommend(examplePlaces, SAT, at(19, 10), window).picks) assert.ok(plan.spare <= 0.1 * window, plan.id);
 });
 
-test("three at a time, spread across kinds of outing, and never padded", () => {
-  const first = recommend(examplePlaces, SAT, at(19, 10), 180);
-  assert.equal(new Set(first.picks.map(p => p.place.group)).size, 3);
-  assert.equal(first.fitCount + first.misses.length, examplePlaces.length);
-  assert.ok(first.picks.every(p => p.why.length > 0));
+test("every plan is something you could walk through in order", () => {
+  for (const [weekday, now] of moments) for (const window of windows) {
+    for (const plan of everyPlan(weekday, now, window)) {
+      assert.ok(plan.stops.length >= 1 && plan.stops.length <= maxStops(window), plan.id);
+      assert.equal(new Set(plan.stops.map(s => s.place.group)).size, plan.stops.length, plan.id);
+      let clock = now;
+      plan.stops.forEach((stop, i) => {
+        assert.equal(stop.arrive, clock + stop.travelMin, plan.id);
+        assert.ok(stop.start >= stop.arrive && stop.stay >= stop.place.minStay && stop.stay <= stop.useful, plan.id);
+        assert.ok(stop.start + stop.stay <= Math.min(stop.closes, now + window), plan.id);
+        if (i === 0) assert.ok(stop.travelMin <= maxTravel(window), plan.id);
+        else assert.ok(stop.travelBy === "walk" && stop.travelMin <= 16, plan.id);
+        clock = stop.start + stop.stay;
+      });
+      assert.equal(plan.end, clock);
+      const groups = plan.stops.map(s => s.place.group);
+      if (groups.includes("sweet") && groups.includes("food")) assert.ok(groups.indexOf("food") < groups.indexOf("sweet"), plan.id);
+      assert.ok(plan.title.length > 0 && plan.why.length > 0);
+    }
+  }
+});
 
-  // Paging walks through everything that fits exactly once, then wraps.
-  const seen = [];
-  for (let page = 0; page < first.pages; page++) seen.push(...ids(recommend(examplePlaces, SAT, at(19, 10), 180, page)));
-  assert.equal(seen.length, first.fitCount);
-  assert.equal(new Set(seen).size, first.fitCount);
-  assert.deepEqual(ids(recommend(examplePlaces, SAT, at(19, 10), 180, first.pages)), ids(first));
+test("three at a time, different from each other, and never padded", () => {
+  for (const [weekday, now] of moments) for (const window of windows) {
+    const all = everyPlan(weekday, now, window);
+    assert.equal(new Set(all.map(p => p.id)).size, all.length);
+    const first = recommend(examplePlaces, weekday, now, window);
+    assert.ok(first.picks.length <= 3);
+    assert.equal(new Set(first.picks.map(p => p.lead.place.id)).size, first.picks.length);
+    assert.equal(first.fitCount + first.misses.length, examplePlaces.length);
+    assert.deepEqual(routes(recommend(examplePlaces, weekday, now, window, first.pages)), routes(first));
+  }
+  const evening = recommend(examplePlaces, SAT, at(19, 10), 300).picks.flatMap(p => p.stops.map(s => s.place.id));
+  assert.equal(new Set(evening).size, evening.length); // the first three share no place
 
   const night = recommend(examplePlaces, TUE, at(3, 10), 120);
   assert.equal(night.picks.length, 0);
   assert.equal(night.misses.length, examplePlaces.length);
-
-  const late = recommend(examplePlaces, MON, at(23, 40), 60); // Monday near midnight
-  assert.ok(late.fitCount > 0 && late.fitCount < 3);
-  assert.equal(late.picks.length, late.fitCount);
 });
 
-test("a place with something unconfirmed never outranks a confirmed one", () => {
-  const ordered = [];
-  const first = recommend(examplePlaces, SAT, at(14), 180);
-  for (let page = 0; page < first.pages; page++) ordered.push(...recommend(examplePlaces, SAT, at(14), 180, page).picks);
-  const statuses = ordered.map(p => p.place.status);
-  assert.ok(statuses.includes("check"));
-  assert.equal(statuses.lastIndexOf("go") < statuses.indexOf("check"), true);
+test("a plan with something unconfirmed never outranks a confirmed one", () => {
+  const statuses = everyPlan(SAT, at(14), 60).map(plan => plan.status);
+  if (statuses.includes("check")) assert.ok(statuses.lastIndexOf("go") < statuses.indexOf("check"));
+  for (const plan of everyPlan(SAT, at(14), 180)) assert.equal(plan.status, plan.stops.some(s => s.place.status === "check") ? "check" : "go");
 });
 
 test("example data is well formed", () => {

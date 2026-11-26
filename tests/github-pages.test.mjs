@@ -23,7 +23,7 @@ test("the prerendered page carries every section and the Saturday example", asyn
   for (const id of ["main-content", "try", "waitlist"]) assert.match(html, new RegExp(`id="${id}"`));
   // No clock exists at build time, so the demo is prerendered on its fixed example.
   assert.match(html, /8:00 PM<\/span> on <!-- -->Saturday/);
-  assert.match(html, /Three that fit/);
+  assert.match(html, /Three ways to spend it/);
   assert.match(html, /property="og:image" content="https:\/\/elevin01\.github\.io\/OutRN\/public\/og\.png"/);
   await access("public/og.png");
 });

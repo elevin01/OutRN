@@ -154,7 +154,7 @@ h3{font-size:1.25rem;line-height:1.3;font-weight:600;letter-spacing:-.01em}
 .board-bar .stamp{color:var(--text-2);transform:rotate(-5deg)}
 
 /* Each kind of outing has its own ticket color. */
-.ticket-food{--ticket:#f36b3f;--on-ticket:#20251f}
+.ticket-food,.ticket-sweet{--ticket:#f36b3f;--on-ticket:#20251f}
 .ticket-drink{--ticket:#5b3fd0;--on-ticket:#ffffff}
 .ticket-show{--ticket:#f6c945;--on-ticket:#20251f}
 .ticket-culture{--ticket:#ffffff;--on-ticket:#20251f}
@@ -177,6 +177,10 @@ h3{font-size:1.25rem;line-height:1.3;font-weight:600;letter-spacing:-.01em}
 .ticket-title{margin-top:10px;font-family:var(--display);font-stretch:76%;font-weight:800;font-size:clamp(2rem,3.3vw,2.875rem);line-height:.95;letter-spacing:-.018em;text-wrap:balance}
 .ticket-why{font-size:1.0625rem;line-height:1.35}
 .ticket-price{margin-top:auto;padding-top:14px;font-size:.9375rem;font-weight:600}
+/* A plan with more than one stop lists them like set times. */
+.ticket-stops{display:grid;gap:8px;margin-top:4px}
+.ticket-stops>span{display:grid;grid-template-columns:5.25rem minmax(0,1fr);align-items:baseline;font-size:1.0625rem;line-height:1.3}
+.ticket-stops b{font-weight:700}
 .ticket-stub{position:relative;display:grid;grid-template-columns:repeat(3,auto);justify-content:space-between;gap:12px;white-space:nowrap;padding:18px 24px 20px;border-top:2px dashed color-mix(in srgb,var(--on-ticket) 50%,transparent);font-size:1.0625rem;font-weight:600;line-height:1.25}
 .ticket-stub::before,.ticket-stub::after{content:"";position:absolute;top:-12px;width:22px;height:22px;border-radius:50%;background:var(--try-bg)}
 .ticket-stub::before{left:-11px}
@@ -203,6 +207,16 @@ h3{font-size:1.25rem;line-height:1.3;font-weight:600;letter-spacing:-.01em}
 .seg-walk .seg-bar{background:var(--tone-2)}
 .seg-wait .seg-bar{border:1.5px dashed var(--text-2);color:var(--text-2)}
 .seg-there .seg-bar{background:var(--ticket,var(--coral));color:var(--on-ticket,var(--ink));font-size:1.0625rem}
+.seg-there .seg-bar b{display:grid;place-items:center;flex:none;width:1.75rem;height:1.75rem;margin-right:10px;border-radius:50%;background:var(--on-ticket);color:var(--ticket);font-size:.9375rem}
+/* With several stops the bar gets crowded, so labels appear only where there is room for them. */
+.timeline-multi .seg-walk,.timeline-multi .seg-wait{min-width:14px;container-type:inline-size}
+.timeline-multi .seg-walk .seg-bar,.timeline-multi .seg-wait .seg-bar{padding:0 8px;font-size:.8125rem;font-weight:400}
+.timeline-multi .seg-there{min-width:2.5rem;container-type:inline-size}
+.timeline-multi .seg-there .seg-bar{padding:0 10px}
+@container (max-width:64px){.timeline-multi .seg-walk .seg-bar span,.timeline-multi .seg-wait .seg-bar span{display:none}}
+@container (max-width:130px){.timeline-multi .seg-there .seg-bar span{display:none}}
+@container (max-width:76px){.timeline-multi .seg-there .seg-tick:not(.seg-tick-end){display:none}}
+@container (max-width:170px){.timeline-multi .seg-there .seg-tick-start{display:none}}
 .seg-after{container-type:inline-size}
 .seg-after .seg-bar{border:1.5px dashed var(--rule);color:var(--text-2);font-weight:400}
 @container (max-width:150px){.seg-after .seg-bar span{display:none}}
@@ -214,6 +228,12 @@ h3{font-size:1.25rem;line-height:1.3;font-weight:600;letter-spacing:-.01em}
 .checks dd{margin-top:4px;font-size:1.125rem;font-weight:600;line-height:1.3}
 .checks small,.sheet-facts small{display:block;margin-top:3px;font-size:.8125rem;font-weight:400;color:var(--text-2)}
 .check-note{margin-top:24px;max-width:40rem}
+.plan-stops{margin-top:20px;border-top:1px solid var(--rule);font-variant-numeric:tabular-nums}
+.plan-stops li{display:grid;grid-template-columns:2.25rem 6rem minmax(0,1.6fr) minmax(0,1fr) minmax(0,1.2fr) minmax(0,1.2fr);gap:8px 20px;align-items:start;padding:18px 0;border-bottom:1px solid var(--rule);line-height:1.35}
+.plan-stops strong{font-weight:600}
+.plan-stops li>div:nth-child(3) strong{font-size:1.125rem}
+.plan-stops small{display:block;margin-top:2px;font-size:.8125rem;color:var(--text-2)}
+.stop-num{display:grid;place-items:center;width:1.875rem;height:1.875rem;border-radius:50%;background:var(--ticket);color:var(--on-ticket);font-size:.9375rem;font-weight:700}
 
 /* Three taps */
 .steps{padding-block:var(--section)}
@@ -284,6 +304,10 @@ footer .brand-rn{min-width:32px;height:27px;font-size:14px}
   .phone-figure{justify-self:center;margin:0}
   .steps-layout,.honest-layout,.waitlist-layout{grid-template-columns:minmax(0,1fr)}
   .checks{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .plan-stops li{grid-template-columns:2.25rem 5.5rem minmax(0,1fr) minmax(0,1fr)}
+  .plan-stops li>div:nth-child(3),.plan-stops li>div:nth-child(6){grid-column:3 / 5}
+  .plan-stops li>div:nth-child(4){grid-column:3}
+  .plan-stops li>div:nth-child(5){grid-column:4}
   .sheet{max-width:28rem}
 }
 @media(max-width:720px){
@@ -296,6 +320,11 @@ footer .brand-rn{min-width:32px;height:27px;font-size:14px}
   .board-bar .button{margin-left:0}
   .ticket-body{padding:20px 20px 22px}
   .ticket-stub{padding:16px 20px 18px;font-size:1rem}
+  .plan-stops li{grid-template-columns:2.25rem minmax(0,1fr);row-gap:10px}
+  .plan-stops li>div:nth-child(n){grid-column:2}
+  .plan-stops .stop-when{display:flex;gap:10px;align-items:baseline;white-space:nowrap}
+  .plan-stops .stop-when small{margin:0}
+  .ticket-stops>span{font-size:1rem}
   .seg-walk,.seg-wait{min-width:76px}
   .seg-bar{padding:0 10px}
   .steps-photo img{aspect-ratio:4/3}

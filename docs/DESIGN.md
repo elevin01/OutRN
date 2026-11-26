@@ -12,7 +12,7 @@ The difference is feasibility. Plenty of products list what exists nearby. OutRN
 
 | Area | Decision | Reason |
 | --- | --- | --- |
-| Signature element | A live demo that reads the visitor's clock and how long they are free, and shows which of 30 example places fit, three at a time, with a reason for each | "Right now" is the product's name and its promise, so the page should know what time it is |
+| Signature element | A live demo that reads the visitor's clock and how long they are free, and plans that time from 31 example places: one stop for an hour, two or three chained stops for longer | "Right now" is the product's name and its promise, so the page should know what time it is |
 | Demo band | Always dark, with the visitor's time and free hours as the heading and the picks as tickets in seven flat colors, one per kind of outing, each set slightly off square | The first version was a tidy table and read like office software. Tickets, stamps and a wall of color are what a night out looks like |
 | Hand-placed details | The street photo, the step numbers and the "Before you go" sheet are tilted a degree or two | The same off-square placement as the tickets, so the page reads as one hand |
 | Hero | One band of brand color, the headline at poster size, and the app on a phone | The app exists now; showing its own layout says more than an illustration of a card |
