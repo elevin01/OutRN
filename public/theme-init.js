@@ -9,7 +9,7 @@
     var theme = choice || (media.matches ? 'dark' : 'light');
     document.documentElement.dataset.theme = theme;
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.content = theme === 'dark' ? '#20251f' : '#f7f5ef';
+    if (meta) meta.content = theme === 'dark' ? '#1f3b2c' : '#f36b3f';
     document.dispatchEvent(new Event('outrn:theme-change'));
   }
   document.addEventListener('outrn:toggle-theme', function () {

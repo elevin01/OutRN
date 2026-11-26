@@ -17,8 +17,8 @@ function boot({ saved = null, dark = false, blocked = false } = {}) {
     storage: value => winEvents.storage({ key: 'outrn-theme', newValue: value }) };
 }
 test('system preference applies before render and follows changes until overridden', () => {
-  const app = boot({ dark: true }); assert.equal(app.theme(), 'dark'); assert.equal(app.meta.content, '#20251f');
-  app.system(false); assert.equal(app.theme(), 'light');
+  const app = boot({ dark: true }); assert.equal(app.theme(), 'dark'); assert.equal(app.meta.content, '#1f3b2c');
+  app.system(false); assert.equal(app.theme(), 'light'); assert.equal(app.meta.content, '#f36b3f');
   app.toggle(); assert.equal(app.theme(), 'dark'); assert.equal(app.stored(), 'dark');
   app.system(false); assert.equal(app.theme(), 'dark');
 });

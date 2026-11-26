@@ -10,12 +10,12 @@
     "dev": "vite",
     "build": "vite build && vite build --ssr prerender.tsx --outDir ../.pages-ssr && node scripts/publish-pages.mjs",
     "start": "vite preview",
-    "test": "npm run build && node --test tests/github-pages.test.mjs tests/theme.test.mjs",
+    "test": "npm run build && node --experimental-strip-types --test tests/github-pages.test.mjs tests/theme.test.mjs tests/feasibility.test.mjs",
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate",
     "build:pages": "npm run build",
     "build:netlify": "SITE_TARGET=netlify npm run build",
-    "test:netlify": "npm run build:netlify && node --test tests/netlify.test.mjs tests/theme.test.mjs"
+    "test:netlify": "npm run build:netlify && node --experimental-strip-types --test tests/netlify.test.mjs tests/theme.test.mjs tests/feasibility.test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

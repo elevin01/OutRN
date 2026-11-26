@@ -25,11 +25,14 @@ test("Netlify output includes the prerendered page, waitlist and root-safe asset
   for (const [, asset] of refs) await checkAsset(asset);
   await checkAsset("/public/theme-init.js");
   const expectedUrl = process.env.SITE_URL || process.env.URL;
-  if (expectedUrl) assert.ok(html.includes(`href="${new URL("/", expectedUrl).href}"`));
-  else assert.doesNotMatch(html, /rel="canonical"/);
+  if (expectedUrl) {
+    assert.ok(html.includes(`href="${new URL("/", expectedUrl).href}"`));
+    assert.ok(html.includes(`content="${new URL("/public/og.png", expectedUrl).href}"`));
+  } else assert.doesNotMatch(html, /rel="canonical"|og:image/);
+  await checkAsset("/public/og.png");
 });
 
-test("CSS font URLs and every copied hero image resolve inside the publish folder", async () => {
+test("CSS font URLs and every copied photo resolve inside the publish folder", async () => {
   const assets = await readdir(resolve(publish, "site-assets"));
   const styles = assets.filter(name => name.endsWith(".css"));
   assert.ok(styles.length > 0);
@@ -42,8 +45,8 @@ test("CSS font URLs and every copied hero image resolve inside the publish folde
       if (url.endsWith(".woff2")) fontCount++;
     }
   }
-  assert.equal(fontCount, 3);
-  for (const name of ["jazz-film", "gallery-film", "dinner-film", "waterfront-film", "city-afternoon"]) {
+  assert.equal(fontCount, 2);
+  for (const name of ["phone-jazz", "phone-dinner", "phone-waterfront", "phone-gallery", "street-afternoon"]) {
     await checkAsset(`/public/images/${name}.webp`);
   }
   const scripts = assets.filter(name => name.endsWith(".js"));

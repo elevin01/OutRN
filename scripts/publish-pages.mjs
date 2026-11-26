@@ -12,6 +12,8 @@ if (process.env.SITE_TARGET === "netlify") {
   const siteUrl = process.env.SITE_URL || process.env.URL;
   const canonical = siteUrl ? new URL("/", siteUrl).href.replaceAll("&", "&amp;").replaceAll('"', "&quot;") : null;
   html = html.replace(/<link rel="canonical"[^>]*>/, canonical ? `<link rel="canonical" href="${canonical}" />` : "");
+  // The sharing image must be an absolute URL, so it follows the canonical origin too.
+  html = html.replace(/<meta property="og:image"[^>]*>/, canonical ? `<meta property="og:image" content="${canonical}public/og.png" />` : "");
 }
 
 // Every publish folder must be self-contained, including prerendered content and
@@ -21,8 +23,10 @@ await cp(resolve(root, "public"), resolve(root, ".pages-build/public"), { recurs
 
 if (process.env.SITE_TARGET !== "netlify") {
   await mkdir(resolve(root, "site-assets"), { recursive: true });
+  // Hashed files from earlier builds (scripts, styles, fonts) are replaced, not accumulated.
+  const built = new Set(await readdir(resolve(root, ".pages-build/site-assets")));
   for (const file of await readdir(resolve(root, "site-assets"))) {
-    if (/^index-[\w-]+\.(js|css)$/.test(file)) await unlink(resolve(root, "site-assets", file));
+    if (!built.has(file)) await unlink(resolve(root, "site-assets", file));
   }
   await cp(resolve(root, ".pages-build/site-assets"), resolve(root, "site-assets"), { recursive: true });
   await writeFile(resolve(root, "index.html"), html);
