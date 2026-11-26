@@ -100,27 +100,29 @@ export default function RightNow() {
   return (
     <section className="try" id="try" aria-labelledby="try-title">
       <div className="wrap">
-        <div className="try-intro">
-          <h2 id="try-title">It starts with the time you have.</h2>
-          <p className="lead">Most apps tell you what’s open. OutRN works out what you can get to, get into and enjoy before your time runs out. Try it with your own clock.</p>
-        </div>
-
-        <div className="try-controls">
-          <p className="try-clock" aria-live="polite">
-            It’s <strong>{formatClock(nowMin)}</strong> on {weekdays[weekday]}, and I’m free for
-          </p>
-          <div className="segmented" role="group" aria-label="How long you are free">
-            {windows.map(option => (
-              <button key={option.minutes} type="button" aria-pressed={windowMin === option.minutes} onClick={() => { setWindowMin(option.minutes); restart(); }}>{option.label}</button>
-            ))}
+        <div className="try-top">
+          <div className="try-intro">
+            <h2 id="try-title">It starts with the time you have.</h2>
+            <p className="lead">Most apps tell you what’s open. OutRN works out what you can get to, get into and enjoy before your time runs out. Try it with your own clock.</p>
           </div>
-        </div>
-        <div className="try-times" role="group" aria-label="The time to try">
-          <span>Or see another time:</span>
-          <button type="button" className="text-button" aria-pressed={when === "now"} onClick={() => { setWhen("now"); restart(); }}>Right now</button>
-          {otherTimes.map(time => (
-            <button key={time.id} type="button" className="text-button" aria-pressed={when === time.id} onClick={() => { setWhen(time.id); restart(); }}>{time.label}</button>
-          ))}
+
+          <div className="try-panel">
+            <p className="try-clock" aria-live="polite">
+              <span>It’s </span><strong>{formatClock(nowMin)}</strong><span> on {weekdays[weekday]}, and I’m free for</span>
+            </p>
+            <div className="segmented" role="group" aria-label="How long you are free">
+              {windows.map(option => (
+                <button key={option.minutes} type="button" aria-pressed={windowMin === option.minutes} onClick={() => { setWindowMin(option.minutes); restart(); }}>{option.label}</button>
+              ))}
+            </div>
+            <div className="try-times" role="group" aria-label="The time to try">
+              <span>Or see another time:</span>
+              <button type="button" className="text-button" aria-pressed={when === "now"} onClick={() => { setWhen("now"); restart(); }}>Right now</button>
+              {otherTimes.map(time => (
+                <button key={time.id} type="button" className="text-button" aria-pressed={when === time.id} onClick={() => { setWhen(time.id); restart(); }}>{time.label}</button>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="board">
