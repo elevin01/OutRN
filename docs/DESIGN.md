@@ -12,7 +12,7 @@ The difference is feasibility. Plenty of products list what exists nearby. OutRN
 
 | Area | Decision | Reason |
 | --- | --- | --- |
-| Signature element | A live demo that reads the visitor's clock and shows which example places fit the time they have | "Right now" is the product's name and its promise, so the page should know what time it is |
+| Signature element | A live demo that reads the visitor's clock and how long they are free, and shows which of 30 example places fit, three at a time, with a reason for each | "Right now" is the product's name and its promise, so the page should know what time it is |
 | Hero | One band of brand color, the headline at poster size, and the app on a phone | The app exists now; showing its own layout says more than an illustration of a card |
 | Color | White page, ink text, and the app's coral as a full band at the top and bottom | The coral was a small accent on an off-white page. Used at full strength it is recognizably OutRN from across a room |
 | Dark theme | Ink page with forest green bands and coral buttons | Keeps a committed color in the dark theme instead of black with one accent |

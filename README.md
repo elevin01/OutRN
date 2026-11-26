@@ -28,7 +28,14 @@ OutRN is always free to use. Opening the app will surface at least three worthwh
 
 Five sections: the hero with a phone showing example picks the way the app lays them out, a live demo, the three steps, how OutRN labels what it knows, and the waitlist.
 
-The live demo reads the visitor's clock, takes how long they are free (one, two or three hours), and works out which of eight invented example places they could reach, get into and enjoy in that time. It shows up to three, lists the ones left out with the reason, and draws the selected pick on a timeline. Nothing is padded: at 3 AM it says nothing fits and offers a Saturday evening instead. The prerendered HTML has no clock, so it ships on that Saturday 8:00 PM example and switches to the visitor's time on load.
+The live demo reads the visitor's clock, takes how long they are free (one, two, three or five hours), and works out which of 30 invented example places they could reach, get into and enjoy in that time. The places range from a five-minute coffee to a beach half an hour away by subway, and some have fixed start times (a film, a comedy show, a yoga class). What it suggests changes with both inputs:
+
+- **How long you have.** A longer window allows a longer trip, and the ranking prefers a pick that fills about two thirds of the time, so an hour gets noodles and a gallery while three hours gets a long dinner and a film.
+- **What time it is.** Opening hours and start times decide what is possible, and each place has hours when it is at its best (breakfast at the diner, the waterfront before dusk).
+
+It shows three at a time, each with a one-line reason, and "Show three others" pages through everything else that fits. Places marked Check first are always offered after confirmed ones. The ones left out are listed with the reason, and the selected pick is drawn on a timeline. Nothing is padded: at 3 AM it says nothing fits. Visitors can also switch to three preset times. The prerendered HTML has no clock, so it ships on a Saturday 8:00 PM example and switches to the visitor's time on load.
+
+To change the examples, edit `examplePlaces` in `app/feasibility.ts`; the ranking is the `fit` function in the same file.
 
 The only motion that plays by itself is the headline and phone settling in on load. Everything else answers a tap, and all of it is off under `prefers-reduced-motion`.
 
