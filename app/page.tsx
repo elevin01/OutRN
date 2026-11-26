@@ -67,7 +67,7 @@ export default function Home() {
           <p>When only two things fit your evening, you see two. OutRN won’t stretch your budget or your walk to fill a third slot.</p>
         </div>
         <div className="sheet" role="group" aria-label="Example of the details OutRN shows before you go">
-          <div className="sheet-head"><p className="sheet-title">Before you go</p><p className="sheet-status">Go now</p></div>
+          <div className="sheet-head"><p className="sheet-title">Before you go</p><p className="stamp">Go now</p></div>
           <dl className="sheet-facts">
             <div><dt>Hours</dt><dd>Open until 1:00 AM<small>From the venue’s website</small></dd></div>
             <div><dt>Getting in</dt><dd>Walk in<small>From the venue’s website</small></dd></div>

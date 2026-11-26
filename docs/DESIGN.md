@@ -13,6 +13,8 @@ The difference is feasibility. Plenty of products list what exists nearby. OutRN
 | Area | Decision | Reason |
 | --- | --- | --- |
 | Signature element | A live demo that reads the visitor's clock and how long they are free, and shows which of 30 example places fit, three at a time, with a reason for each | "Right now" is the product's name and its promise, so the page should know what time it is |
+| Demo band | Always dark, with the visitor's time and free hours as the heading and the picks as tickets in seven flat colors, one per kind of outing, each set slightly off square | The first version was a tidy table and read like office software. Tickets, stamps and a wall of color are what a night out looks like |
+| Hand-placed details | The street photo, the step numbers and the "Before you go" sheet are tilted a degree or two | The same off-square placement as the tickets, so the page reads as one hand |
 | Hero | One band of brand color, the headline at poster size, and the app on a phone | The app exists now; showing its own layout says more than an illustration of a card |
 | Color | White page, ink text, and the app's coral as a full band at the top and bottom | The coral was a small accent on an off-white page. Used at full strength it is recognizably OutRN from across a room |
 | Dark theme | Ink page with forest green bands and coral buttons | Keeps a committed color in the dark theme instead of black with one accent |
@@ -39,6 +41,8 @@ All tokens live at the top of `app/globals.css`.
 
 Type scale: hero headline sized to its column (up to 164px), section headings 38–72px, row titles 20–26px, body 17px at 1.6, small print 13–15px. Radii: 14px on controls, 22px on panels, 48px on the phone.
 
+Ticket colors, each with its own text color: coral `#f36b3f`, violet `#5b3fd0` (white text), yellow `#f6c945`, white, mint `#8fd9a8`, sky `#cfe7ee`, pink `#ff8fb8`. They appear only on tickets and on the timeline bar of the selected pick.
+
 Coral never carries white text and is never used for small text on white: both fail contrast. Ink on coral is about 5:1.
 
 ## Rules the page keeps
@@ -46,7 +50,7 @@ Coral never carries white text and is never used for small text on white: both f
 - Every place, price and time on the page is an example and is labeled as one. No testimonials, counts or ratings appear until there are true ones to show.
 - Content is present when the page loads. The prerendered HTML includes the demo in a fixed Saturday-evening state.
 - The phone shows the app's own layout and keeps the app's colors in both themes.
-- Grouping comes from spacing and rules. The only boxed elements are the phone and the "Before you go" sheet, because both depict app surfaces.
+- Grouping comes from spacing and rules. The only boxed elements are the phone and the "Before you go" sheet, which depict app surfaces, and the tickets, which are three separate things to choose between.
 - No section labels above headings, no decorative numbering (the three steps are numbered because they are a sequence), no icons standing in for explanations.
 
 ## Not decided here

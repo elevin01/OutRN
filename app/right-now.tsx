@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
-import { examplePlaces, formatClock, formatDuration, recommend, travelLabel, type Fit, type Miss } from "./feasibility";
+import { examplePlaces, formatClock, formatDuration, recommend, type Fit, type Miss } from "./feasibility";
 
-const windows = [{ minutes: 60, label: "1 hour" }, { minutes: 120, label: "2 hours" }, { minutes: 180, label: "3 hours" }, { minutes: 300, label: "5 hours" }];
+const windows = [
+  { minutes: 60, label: "1 hour", words: "an hour" }, { minutes: 120, label: "2 hours", words: "two hours" },
+  { minutes: 180, label: "3 hours", words: "three hours" }, { minutes: 300, label: "5 hours", words: "five hours" },
+];
 const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const otherTimes = [
   { id: "sun-morning", label: "Sunday 10 AM", weekday: 0, nowMin: 10 * 60 },
@@ -35,7 +38,7 @@ function Timeline({ fit, nowMin, windowMin }: { fit: Fit; nowMin: number; window
     ? `It starts at ${formatClock(fit.start)} and runs ${formatDuration(fit.useful)}, so you’d be out by ${formatClock(fit.end)}.`
     : `${wait > 0 ? `It opens at ${formatClock(fit.start)}, and then you` : "You"}’d have ${formatDuration(fit.useful)} there before ${fit.endsBy === "closing" ? "it closes" : "your time is up"}.`;
   return (
-    <div className="timeline-block">
+    <div className={`timeline-block ticket-${place.group}`}>
       <h3>{place.name}, worked out</h3>
       <p className="timeline-summary">{journey} {visit}</p>
       <div className="timeline" aria-hidden="true">
@@ -100,16 +103,13 @@ export default function RightNow() {
   return (
     <section className="try" id="try" aria-labelledby="try-title">
       <div className="wrap">
-        <div className="try-top">
-          <div className="try-intro">
-            <h2 id="try-title">It starts with the time you have.</h2>
-            <p className="lead">Most apps tell you what’s open. OutRN works out what you can get to, get into and enjoy before your time runs out. Try it with your own clock.</p>
-          </div>
+        <h2 id="try-title" className="try-headline">
+          It’s <span className="try-time">{formatClock(nowMin)}</span> on {weekdays[weekday]} and I’ve got{" "}
+          <mark key={windowMin}>{windows.find(option => option.minutes === windowMin)!.words}</mark>.
+        </h2>
 
+        <div className="try-top">
           <div className="try-panel">
-            <p className="try-clock" aria-live="polite">
-              <span>It’s </span><strong>{formatClock(nowMin)}</strong><span> on {weekdays[weekday]}, and I’m free for</span>
-            </p>
             <div className="segmented" role="group" aria-label="How long you are free">
               {windows.map(option => (
                 <button key={option.minutes} type="button" aria-pressed={windowMin === option.minutes} onClick={() => { setWindowMin(option.minutes); restart(); }}>{option.label}</button>
@@ -123,25 +123,34 @@ export default function RightNow() {
               ))}
             </div>
           </div>
+          <p className="lead">OutRN starts with the time you have. Most apps tell you what’s open. This works out what you can get to, get into and enjoy before your time runs out, so change the hours and watch the plans change.</p>
         </div>
 
         <div className="board">
-          {picks.length > 0 && <div className="board-head" aria-hidden="true">
-            <span>{heading}</span><span>Getting there</span><span>Arrive</span><span>You’d have</span><span />
+          {picks.length > 0 && <div className="board-bar">
+            <h3>{heading}</h3>
+            <span className="stamp">Examples</span>
+            {fitCount > 3 && <p>{fitCount} of {examplePlaces.length} places fit {formatDuration(windowMin)} from {formatClock(nowMin)}.</p>}
+            {fitCount > 3 && <button type="button" className="button button-small button-outline" onClick={() => { setPage(result.page + 1); setChosen(null); }}>{moreLabel}</button>}
           </div>}
-          <ol className="board-rows" aria-label={heading}>
+          <ol className="tickets" aria-label={heading}>
             {picks.map(pick => (
               <li key={pick.place.id}>
-                <button type="button" className="board-row" aria-pressed={pick === selected} onClick={() => setChosen(pick.place.id)}>
-                  <span className="row-name">
-                    <strong>{pick.place.name}</strong>
-                    <span className="row-why">{pick.why}</span>
-                    <span className="row-kind">{pick.place.kind}, {pick.place.price.charAt(0).toLowerCase() + pick.place.price.slice(1)}</span>
+                <button type="button" className={`ticket ticket-${pick.place.group}`} aria-pressed={pick === selected} onClick={() => setChosen(pick.place.id)}>
+                  <span className="ticket-body">
+                    <span className="ticket-top">
+                      <span>{pick.place.kind}</span>
+                      <span className={pick.place.status === "go" ? "stamp" : "stamp stamp-check"}>{pick.place.status === "go" ? "Go now" : "Check first"}</span>
+                    </span>
+                    <strong className="ticket-title">{pick.place.name}</strong>
+                    <span className="ticket-why">{pick.why}.</span>
+                    <span className="ticket-price">{pick.place.price}</span>
                   </span>
-                  <span className="row-fact"><span className="row-label">Travel</span>{travelLabel(pick.place)}</span>
-                  <span className="row-fact"><span className="row-label">Arrive</span>{formatClock(pick.arrive)}</span>
-                  <span className="row-fact"><span className="row-label">You’d have</span>{formatDuration(pick.useful)}</span>
-                  <span className={pick.place.status === "go" ? "row-status is-go" : "row-status"}>{pick.place.status === "go" ? "Go now" : "Check first"}</span>
+                  <span className="ticket-stub">
+                    <span><small>{pick.place.travelBy === "walk" ? "Walk" : "Subway"}</small>{pick.place.travelMin} min</span>
+                    <span><small>Arrive</small>{formatClock(pick.arrive)}</span>
+                    <span><small>You’d have</small>{formatDuration(pick.useful)}</span>
+                  </span>
                 </button>
               </li>
             ))}
@@ -149,22 +158,18 @@ export default function RightNow() {
 
           {picks.length === 0 && <div className="board-empty">
             <span>None of the {examplePlaces.length} example places fits at {formatClock(nowMin)}. OutRN would tell you that too, instead of sending you to a locked door.</span>
-            <button type="button" className="button button-small" onClick={() => { setWhen("fri-night"); restart(); }}>Try Friday at 9 PM</button>
+            <button type="button" className="button" onClick={() => { setWhen("fri-night"); restart(); }}>Try Friday at 9 PM</button>
           </div>}
           {fitCount > 0 && fitCount < 3 && <p className="board-note">
             <span>Only {fitCount === 1 ? "one place fits" : "two places fit"} right now, so that’s what you see. OutRN doesn’t pad the list.</span>
           </p>}
 
           <div className="board-foot">
-            {fitCount > 3 && <p className="board-more">
-              <button type="button" className="button button-small button-outline" onClick={() => { setPage(result.page + 1); setChosen(null); }}>{moreLabel}</button>
-              <span>{fitCount} of the {examplePlaces.length} example places fit {formatDuration(windowMin)} from {formatClock(nowMin)}.</span>
-            </p>}
             {misses.length > 0 && <details>
               <summary>{misses.length} didn’t make it{missSummary ? `: ${missSummary}` : ""}</summary>
               <ul>{misses.map(miss => <li key={miss.place.id}><span>{miss.place.name}</span><span>{miss.detail}</span></li>)}</ul>
             </details>}
-            <p>{date ? "Example places, not live listings. The times are worked out from your clock." : `Example places, not live listings, shown for ${moment!.label}.`}</p>
+            <p>{date ? "These are invented example places, not live listings. The times are worked out from your clock." : `These are invented example places, not live listings, shown for ${moment!.label}.`}</p>
           </div>
         </div>
 
