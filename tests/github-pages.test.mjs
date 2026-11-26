@@ -27,3 +27,13 @@ test("the prerendered page carries every section and the Saturday example", asyn
   assert.match(html, /property="og:image" content="https:\/\/elevin01\.github\.io\/OutRN\/public\/og\.png"/);
   await access("public/og.png");
 });
+test("the hero text column cannot collapse on phones", async () => {
+  // The headline is sized from its column's width, which makes the column a size container.
+  // A size container has no intrinsic width, so unless it is stretched it collapses to nothing
+  // when the hero stacks into one column, taking the headline with it.
+  const css = await readFile("app/globals.css", "utf8");
+  const rule = css.match(/\.hero-copy\{[^}]*\}/)[0];
+  assert.match(rule, /container-type:inline-size/);
+  assert.match(rule, /justify-self:stretch/);
+  assert.doesNotMatch(css, /\.hero\{[^}]*justify-items:start/);
+});
